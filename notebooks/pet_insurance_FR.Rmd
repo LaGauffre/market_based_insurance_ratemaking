@@ -1,5 +1,5 @@
 ---
-title: "Application to real real data:pet insuraance rates in France"
+title: "One risk class and several models"
 output:
   html_document:
     df_print: paged
@@ -14,15 +14,43 @@ library(rstudioapi)
 library(IsoPriceR)
 library(readr)
 library(xtable)
-# setwd(dirname(getActiveDocumentContext()$path))
+setwd(dirname(getActiveDocumentContext()$path))
 getwd()
 
-pet_insurance_FR <- read_csv("../data/pet_insurance_FR.csv")
+pet_insurance_FR <- read_delim("../data/pet_insurance_FR_R1_unique_risk_class.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
-data <- data.frame(carrier = pet_insurance_FR$Company, race = pet_insurance_FR$Race, r = as.numeric(sub("%", "", pet_insurance_FR$rate))/100, d = pet_insurance_FR$deductible, l = pet_insurance_FR$limit, x = pet_insurance_FR$Premium)
-nrow(data)
+
+data <- data.frame(insurance_carrier = as.character(pet_insurance_FR$Company), specie = "dog", gender = "female", age = 4, breed = pet_insurance_FR$Race, r = as.numeric(sub("%", "", pet_insurance_FR$rate))/100, d = pet_insurance_FR$deductible, l = pet_insurance_FR$limit, x = pet_insurance_FR$Premium)
+
+latex_code <- xtable(head(data, 5))
+print(latex_code, include.rownames = FALSE)
 
 ```
+```{r}
+create_data_dictionary <- function(df) {
+  var_names <- names(df)
+  var_types <- sapply(df, class)
+  var_examples <- sapply(df, function(x) paste(head(x, 1), collapse = ", "))
+  
+  data_dict <- data.frame(
+    Variable = var_names,
+    Type = var_types,
+    Example = var_examples,
+    stringsAsFactors = FALSE
+  )
+  
+  return(data_dict)
+}
+data_dictionary <- create_data_dictionary(data)
+# Convert the data dictionary to LaTeX code
+latex_dict <- xtable(data_dictionary)
+
+# Print LaTeX code without row names
+print(latex_dict, include.rownames = FALSE)
+```
+
+
 # Descriptive statistics
 ## Coverage rate, deductible and limit
 ```{r}
@@ -115,8 +143,8 @@ length(prior_distributions)
 # data <- data %>% filter(race == "australian sheperd")
 popSize <- 1000;  MC_R<- 2000; acc <- 1; sp_bounds <- c(0.4, 0.7); n_models <- length(prior_distributions); set.seed(1234)
 #  Unparallel
-# system.time(res_abc_list <- lapply(1:n_models, function(k) abc(data, prior_distributions[[k]], loss_models[[k]], p_p, popSize, MC_R, acc, sp_bounds)))
-# save(res_abc_list, file = "../data/res_abc_real_data.RData")
+system.time(res_abc_list <- lapply(1:n_models, function(k) abc(data, prior_distributions[[k]], loss_models[[k]], p_p, popSize, MC_R, acc, sp_bounds)))
+save(res_abc_list, file = "../data/res_abc_real_data.RData")
 # Going Paralell
 
 ```
