@@ -1,0 +1,352 @@
+---
+title: "Section 5 of Market-Based Insurance Ratemaking"
+output: html_notebook
+---
+
+```{r}
+library(latex2exp)
+library(kableExtra)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(rstudioapi)
+library(IsoPriceR)
+library(readr)
+library(xtable)
+setwd(dirname(getActiveDocumentContext()$path))
+getwd()
+```
+
+
+```{r}
+
+# Function to calculate the age based on the date of birth and put it into the right format
+calculate_age <- function(birthdate) {
+  # Parse the birthdate
+  birth_date <- as.Date(birthdate, format = "%d/%m/%Y")
+  
+  # Get the current date
+  current_date <- as.Date("2024-05-18")
+  
+  
+  # Calculate the difference in years
+  years <- as.numeric(format(current_date, "%Y")) - as.numeric(format(birth_date, "%Y"))
+  
+  # Adjust for birthdate not yet reached this year
+  if (format(current_date, "%m%d") < format(birth_date, "%m%d")) {
+    years <- years - 1
+  }
+  # Calculate the difference in months
+  months <- as.numeric(format(current_date, "%m")) - as.numeric(format(birth_date, "%m"))
+  
+  # Adjust if birth month hasn't been reached this year
+  if (months < 0) {
+    months <- months + 12
+  }
+  
+  # Create the age string
+  if(years >0 ){
+    age_string <- paste(years, "years")
+  }else{
+    age_string <- paste(months, "months")
+  }
+  return(age_string)
+}
+
+pet_insurance_FR_multiple_risk_class <- read_delim("../data/pet_insurance_FR_multiple_risk_class.csv", 
+                                                   delim = ";", escape_double = FALSE, trim_ws = TRUE) 
+
+pet_insurance_FR_multiple_risk_class$age <- sapply(pet_insurance_FR_multiple_risk_class$birthdate, function(birthdate) calculate_age(birthdate))
+
+pet_insurance_FR_multiple_risk_class <- pet_insurance_FR_multiple_risk_class %>% mutate(x = commercialPremium,
+  key_risk_class = paste(specie, breed, gender, age)) %>% select(-c(birthdate, commercialPremium)) %>% filter(age != "6 years")
+
+# Distributor 5 does not discriminate with the age of the dog and distributor 1 does not differentiate between 4 months and 2 years
+pet_insurance_FR_multiple_risk_class <- rbind(pet_insurance_FR_multiple_risk_class,
+  pet_insurance_FR_multiple_risk_class %>% filter(insurance_carrier == 5) %>% mutate(age = "2 years")  %>% mutate(key_risk_class = paste(specie, breed, gender, age)),
+  pet_insurance_FR_multiple_risk_class %>% filter(insurance_carrier == 5) %>% mutate(age = "4 years") %>% mutate(key_risk_class = paste(specie, breed, gender, age)),
+  pet_insurance_FR_multiple_risk_class %>% filter(insurance_carrier == 1 & breed == "golden-retriever" & age == "4 months") %>% mutate(age = "2 years") %>% mutate(key_risk_class = paste(specie, breed, gender, age)))
+  
+pet_insurance_FR_multiple_risk_class  <- pet_insurance_FR_multiple_risk_class %>% arrange(specie, gender, breed, substr(age,3,3), substr(age,1,1))
+
+risk_classes_df <- pet_insurance_FR_multiple_risk_class %>%
+  distinct(specie, breed, gender, age) %>%
+  arrange(specie, gender, breed, substr(age,3,3), substr(age,1,1))
+
+data <- pet_insurance_FR_multiple_risk_class %>% filter(breed == "australian sheperd" & age  == "2 years")
+
+
+```
+## Section 5.2
+
+### Table 3
+
+```{r}
+latex_code <- xtable(head(data, 5))
+print(latex_code, include.rownames = FALSE)
+```
+## Table 4
+
+```{r}
+latex_code <- xtable(risk_classes_df)
+print(latex_code)
+
+```
+# Figure 9
+
+```{r}
+(b_plot_r <- ggplot(data = data) + geom_bar(mapping = aes(x = r)) + ggplot2::labs(x= "Coverage Rate", y = "Frequency") +
+    ggplot2::theme_classic(base_size = 20))
+ggsave("../figures/b_plot_r.pdf", b_plot_r)
+(b_plot_d <- ggplot(data = data) + geom_bar(mapping = aes(x = d)) + ggplot2::labs(x= "Deductible", y = "Frequency") +
+    ggplot2::theme_classic(base_size = 20))
+ggsave("../figures/b_plot_d.pdf", b_plot_d)
+(b_plot_l <- ggplot(data = data) + geom_bar(mapping = aes(x = l)) + ggplot2::labs(x= "Limit", y = "Frequency") +
+ggplot2::theme_classic(base_size = 20))
+ggsave("../figures/b_plot_l.pdf", b_plot_l)
+```
+## Section 5.3
+
+```{r}
+# Premium settings
+p_p <- pure_premium("xs", c("r", "d", "l"))
+
+# Claim sizes distributions
+lnorm_dist <- model("lognormal", c("mu", "sigma"))
+gamma_dist <- model("gamma", c("alpha", "beta"))
+
+# Claim Frequency distributions
+pois_dist <- model("poisson", c("lambda"))
+bin_dist <- model("binomial", c("a", "p"))
+nbin_dist <- model("negative binomial", c("b", "p"))
+
+# Loss models
+loss_models <- list(
+  loss_model(pois_dist, lnorm_dist, "Pois(lambda)-Lognormal(mu,sigma=1)"),
+  loss_model(bin_dist, lnorm_dist, "Binomial(a=12,p)-Lognormal(mu,sigma=1)"),
+  loss_model(nbin_dist, lnorm_dist, "Negative Binomial(b=1,p)-Lognormal(mu,sigma=1)"),
+  loss_model(pois_dist, gamma_dist, "Pois(lambda)-Gamma(alpha,beta=1)"),
+  loss_model(bin_dist, gamma_dist, "Binomial(a=12,p)-Gamma(alpha,beta=1)"),
+  loss_model(nbin_dist, gamma_dist, "Negative Binomial(b=1,p)-Gamma(alpha,beta=1)"),
+  loss_model(pois_dist, lnorm_dist, "Pois(lambda)-Lognormal(mu=0,sigma)"),
+  loss_model(bin_dist, lnorm_dist, "Binomial(a=12,p)-Lognormal(mu=0,sigma)"),
+  loss_model(nbin_dist, lnorm_dist, "Negative-Binomial(b=1,p)-Lognormal(mu=0,sigma)"),
+  loss_model(pois_dist, gamma_dist, "Pois(lambda)-Gamma(alpha=1,beta)"),
+  loss_model(bin_dist, gamma_dist, "Binomial(a=12,p)-Gamma(alpha=1,beta)"),
+  loss_model(nbin_dist, gamma_dist, "Negative-Binomial(b=1,p)-Gamma(alpha=1,beta)")
+             )
+
+# Prior assumptions 
+
+prior_mu <- prior_dist("uniform", "mu",c(-10, 10))
+prior_mu_c <- prior_dist("constant", "mu",c(0))
+prior_sigma <- prior_dist("uniform", "sigma", c(0,5))
+prior_sigma_c <- prior_dist("constant", "sigma", c(1))
+
+prior_alpha <- prior_dist("uniform", "alpha",c(0, 10000))
+prior_beta_c <- prior_dist("constant", "beta", c(1))
+
+prior_lambda <- prior_dist("uniform", "lambda", c(0, 10))
+prior_a <- prior_dist("constant", "a", c(12))
+prior_b <- prior_dist("constant", "b", c(1))
+prior_p <- prior_dist("uniform", "p", c(0,1))
+
+
+prior_distributions <- list(
+  independent_priors(list(prior_lambda, prior_mu, prior_sigma_c)),
+  independent_priors(list(prior_a, prior_p, prior_mu, prior_sigma_c)),
+  independent_priors(list(prior_b, prior_p, prior_mu, prior_sigma_c)),
+  independent_priors(list(prior_lambda, prior_alpha, prior_beta_c)),
+  independent_priors(list(prior_a, prior_p, prior_alpha, prior_beta_c)),
+  independent_priors(list(prior_b, prior_p, prior_alpha, prior_beta_c)),
+  independent_priors(list(prior_lambda, prior_mu_c, prior_sigma)),
+  independent_priors(list(prior_a, prior_p, prior_mu_c, prior_sigma)),
+  independent_priors(list(prior_b, prior_p, prior_mu_c, prior_sigma))
+)
+```
+
+```{r}
+popSize <- 1000;  MC_R<- 2000; acc <- 1; sp_bounds <- c(0.4, 0.7); n_models <- length(prior_distributions); set.seed(1234)
+
+# system.time(res_abc_list <- lapply(1:n_models, function(k) abc(data, prior_distributions[[k]], loss_models[[k]], p_p, popSize, MC_R, acc, sp_bounds)))
+# save(res_abc_list, file = "../data/res_abc_real_data_section53.RData")
+```
+
+
+```{r}
+load("../data/res_abc_real_data_section53.RData")
+posterior_point_estimates <- data.frame()
+for(k in 1:length(res_abc_list)){
+ 
+  mode <- t(as.matrix(extract_mode(res_abc_list[[k]], loss_models[[k]], prior_distributions[[k]])))
+  map <- t(as.matrix(colMeans(extract_last_cloud(res_abc_list[[k]]))))
+  df <- rbind(compute_metric_particle(data, p_p, loss_models[[k]], map, method = "map")$estimates,
+      compute_metric_particle(data, p_p, loss_models[[k]], mode, method = "mode")$estimates
+      )
+  posterior_point_estimates <- rbind(posterior_point_estimates, df)
+}
+```
+
+
+## Figure 10
+
+```{r}
+
+k <- 1
+
+for(k in 1:n_models){
+  last_cloud <- extract_last_cloud(res_abc_list[[k]])
+  posterior_plots(last_cloud, prior_distributions[[k]], loss_models[[k]], ref_line = FALSE, font_size = 20 )
+  ggsave(paste0("../figures/post_plot_",loss_models[[k]]$model_name, ".pdf"))
+  
+}
+```
+
+## Table 5
+```{r}
+tab <- data.frame( model = sapply(1:n_models, function(k) loss_models[[k]]$model_name),
+            eps = sapply(1:n_models, function(k) max(res_abc_list[[k]]$ds[[length(res_abc_list[[k]]$ds)]]))
+            )
+print(xtable(tab[order(tab$eps) ,]), include.rownames=FALSE)
+```
+
+
+## Table 6
+
+
+```{r}
+tab <- posterior_point_estimates %>% filter(parm_names == "mu"| parm_names == "alpha"| parm_names == "sigma" | parm_names == "lambda"| parm_names == "p")%>% pivot_wider(names_from = c(method), values_from = parm_values)
+print(xtable(tab), include.rownames=FALSE)
+```
+
+## Table 7
+
+```{r}
+tab <- posterior_point_estimates %>% filter(parm_names == "Total_Claim_Amount" | parm_names == "LR") %>% pivot_wider(names_from = c(method,parm_names), values_from = parm_values) %>% select("model", "map_LR", "mode_LR", "map_Total_Claim_Amount", "mode_Total_Claim_Amount")
+print(xtable(tab), include.rownames=FALSE)
+```
+
+## Figure 11
+
+```{r}
+iso_df <- data.frame()
+k <- 1
+
+for(k in 1:length(res_abc_list)){
+  map <- t(as.matrix(colMeans(extract_last_cloud(res_abc_list[[k]]))))
+  pp <- compute_metric_particle(data, p_p, loss_models[[k]], map, method = "map")$pp
+  # mode <- t(as.matrix(extract_mode(res_abc_list[[k]], loss_models[[k]], prior_distributions[[k]])))
+  # pp <- compute_metric_particle(data, p_p, loss_models[[k]], mode, method = "mode")$pp
+  res_iso <- isoreg(pp, data$x)
+  iso_df <- rbind(iso_df,
+                data.frame(model = rep(loss_models[[k]]$model_name, nrow(data)), x= sort(res_iso$x), y = res_iso$yf))
+}
+
+(iso_plot <- ggplot(data = iso_df) + geom_step(mapping = aes(x= x, y = y, color = model)) +  ggplot2::theme_classic(base_size = 14) + labs(x= "Pure premium", y = "Commercial premium", title = "", color = "Model") + theme(legend.position="none")) 
+
+ggsave("../figures/iso_real_data_all_models.pdf", iso_plot)
+```
+
+## Figure 12
+
+```{r}
+loss_model_names <- sapply(1:9, function(k) loss_models[[k]]$model_name)
+k <- 1
+res_abc_pois_lnorm_sigma1 <- res_abc_list[[k]]
+last_cloud <- extract_last_cloud(res_abc_list[[k]])
+map <- t(as.matrix(colMeans(last_cloud)))
+pp_pois_lnorm_sigma1 <- compute_metric_particle(data, p_p, loss_models[[k]], map)$pp 
+data["pp"] <- pp_pois_lnorm_sigma1
+res_iso <- isoreg(pp_pois_lnorm_sigma1, data$x)
+iso_df <-data.frame(model = rep(loss_models[[k]]$model_name, nrow(data)), x= sort(res_iso$x), y = res_iso$yf)
+
+(ggplot() + geom_point(data = data, mapping = aes(x = pp, y = x, color = as.factor(insurance_carrier))) + geom_step(data = iso_df, mapping = aes(x = x, y = y)) + labs(x= "Pure Premium", y = "Commercial premium", title = "", color = "Insurance Carrier") + ggplot2::theme_classic(base_size = 20) 
+  + theme(legend.position = "none")
+  ) 
+ggsave("../figures/iso_pois_lnorm_sigma1.pdf")
+```
+
+# Section 5.4
+
+```{r}
+# Premium settings
+p_p <- pure_premium("xs", c("r", "d", "l"))
+
+# Claim size distribution
+lnorm_dist <- model("lognormal", c("mu", "sigma"))
+
+# Claim Frequency distribution
+pois_dist <- model("poisson", c("lambda"))
+
+# Setting of the loss model
+l_m <- loss_model(pois_dist, lnorm_dist, "Pois(lambda)-Lognormal(mu,sigma=1)")
+
+# Prior assumptions
+prior_mu <- prior_dist("uniform", "mu",c(-10, 10))
+prior_sigma_c <- prior_dist("constant", "sigma", c(1))
+prior_lambda <- prior_dist("uniform", "lambda", c(0, 10))
+prior_distribution <- independent_priors(list(prior_lambda, prior_mu, prior_sigma_c))
+
+# Algorithm settings
+popSize <- 1000;  MC_R<- 2000; acc <- 1; sp_bounds <- c(0.4, 0.7); set.seed(1234)
+risk_classes <- unique(pet_insurance_FR_multiple_risk_class$key_risk_class)
+# res_abc_risk_classes <- list()
+# k <- 0
+# for(risk_class in risk_classes){
+#   k <- k + 1
+#   print(risk_class)
+#   data <- pet_insurance_FR_multiple_risk_class[pet_insurance_FR_multiple_risk_class$key_risk_class == risk_class, ]
+#   res_abc <- abc(data, prior_distribution, l_m, p_p, popSize, MC_R, acc, sp_bounds)
+#   res_abc_risk_classes[[k]] <- res_abc
+# }
+# names(res_abc_risk_classes) <- risk_classes
+# save(res_abc_risk_classes, file = "../data/res_abc_section54.RData")
+load(file = "../data/res_abc_section54.RData")
+
+metric_df <- data.frame()
+pp_df <-  data.frame()
+for(risk_class in risk_classes){
+  res_abc <- res_abc_risk_classes[[risk_class]]
+  last_cloud <- extract_last_cloud(res_abc)
+  # posterior_plots(last_cloud, prior_distribution, l_m, ref_line = FALSE, font_size = 20 )
+  data <- pet_insurance_FR_multiple_risk_class[pet_insurance_FR_multiple_risk_class$key_risk_class == risk_class, ]
+  last_cloud_df <- as.data.frame(last_cloud)
+  res_metric <- compute_metric_cloud(data, p_p, l_m, last_cloud)
+  pp_df <- rbind(pp_df,
+    data.frame(cps =data$x,
+      pps = apply(res_metric$pps, MARGIN =1, FUN = mean),
+      risk_class = risk_class, insurance_carrier = data$insurance_carrier)
+    )
+  metric_df <- rbind(metric_df, data.frame(lambda = last_cloud_df$lambda, 
+                                     mu = last_cloud_df$mu,
+                                     Claim_Frequency = res_metric$estimates$Claim_Frequency,
+                                     Claim_Amount = res_metric$estimates$Claim_Amount,
+                                     Prob_0 = res_metric$estimates$Prob_0,
+                                     Total_Claim_Amount = res_metric$estimates$Total_Claim_Amount,
+                                     LR = res_metric$estimates$LR, 
+                                     risk_class = risk_class))
+}
+```
+
+## Figure 13
+
+```{r}
+risk_classes_df <- risk_classes_df %>% mutate(risk_class = paste(specie, breed, gender, age))
+metric_df_V1 <- metric_df %>% left_join(risk_classes_df, by = 'risk_class') %>%
+  arrange(specie, gender, breed, substr(age,3,3), substr(age,1,1)) %>% mutate(age = factor(age, levels = c("4 months", "2 years", "4 years"))) 
+
+# boxplot of the total claim amounts 
+boxplot_EX <- ggplot(data = metric_df_V1) +  geom_boxplot(mapping = aes(y = Total_Claim_Amount, x = breed, color = as.factor(age))) + 
+  theme_classic(base_size = 20)+ 
+  labs(x= "Breed",  title = TeX("E(X)"), y = "", color = "Age") +  
+     theme(axis.text.x = element_text(size = 12, angle = 45, vjust = 0.6))
+ggsave(paste0("../figures/boxplot_EX_multiple_risk_classes.pdf"), boxplot_EX)
+
+# boxplot of the LR
+boxplot_LR <- ggplot(data = metric_df_V1) +  geom_boxplot(mapping = aes(y = LR, x = breed, color = as.factor(age))) + 
+  theme_classic(base_size = 20)+ 
+  labs(x= "Breed",  title = TeX("LR"), y = "", color = "Age") +  
+     theme(axis.text.x = element_text(size = 12, angle = 45, vjust = 0.6))
+ggsave(paste0("../figures/boxplot_LR_multiple_risk_classes.pdf"), boxplot_LR)
+```
+

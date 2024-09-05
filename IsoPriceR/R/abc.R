@@ -186,7 +186,7 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
 #' @export
 #'
 #' @examples
-abc <- function(data, model_prior, l_m, p_p, popSize, MC_R, acc = 0.01, sp_bounds){
+abc <- function(data, model_prior, l_m, p_p, popSize, MC_R, acc = 0.01, sp_bounds, eps_min = Inf){
   g<- 1; Epss <- c(Inf); ESS <- c(popSize)
   print(paste("Sampling generation of particles ", g, "; eps = ", Epss[g], "; ESS = ", ESS[g]))
   sample_res <- sample_first(data, model_prior, l_m, p_p, popSize, MC_R, sp_bounds)
@@ -196,7 +196,7 @@ abc <- function(data, model_prior, l_m, p_p, popSize, MC_R, acc = 0.01, sp_bound
   print(paste("Sampling generation of particles ", g, "; eps = ", Epss[g], "; ESS = ", ESS[g]))
   sample_res <- sample_g(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_bounds)
   Clouds[[g]] <- sample_res$cloud; dss[[g]] <- sample_res$ds
-  while(Epss[g-1] - Epss[g] > acc){
+  while( (Epss[g-1] - Epss[g] > acc) | (Epss[g] > eps_min)){
     g <- g + 1
     Epss[g] <- sample_res$eps; ESS[g] <- sample_res$ESS
     print(paste("Sampling generation of particles ", g, "; eps = ", Epss[g], "; ESS = ", ESS[g]))

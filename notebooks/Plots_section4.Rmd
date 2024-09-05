@@ -1,0 +1,63 @@
+---
+title: "Plots of section 4 of Market-Based Insurance Ratemaking"
+output: html_notebook
+---
+
+```{r}
+library(kableExtra)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(rstudioapi)
+library(IsoPriceR)
+library(readr)
+library(xtable)
+library(latex2exp)
+setwd(dirname(getActiveDocumentContext()$path))
+getwd()
+```
+
+```{r}
+# Sample sizes----
+ns <- c( 25, 50, 100, 200)
+
+# Premium an loss model Settings ----
+p_p <- pure_premium("xs", c("r", "d", "l"))
+freq_dist <- model("poisson", c("lambda"))
+sev_dist <- model("lognormal", c("mu", "sigma"))
+l_m <- loss_model(freq_dist, sev_dist, "Lognormal(mu, sigma = 1)-Poisson(lambda)")
+
+# True parameters of the loss model ----
+lambda_true <- 0.3; mu_true <- 6; sigma_true <- 1
+true_parms <- t(as.matrix(c(lambda_true, mu_true, sigma_true)))
+colnames(true_parms) <- l_m$parm_names
+
+# Prior assumptions----
+prior_lambda <- prior_dist("uniform", "lambda",c(0, 10))
+prior_mu <- prior_dist("uniform", "mu",c(-10, 10))
+prior_sigma <- prior_dist("constant", "sigma", c(1))
+prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
+model_prior <- independent_priors(prior_distributions)
+```
+
+# Figure 7 and 8
+
+```{r}
+df_sim <- read_csv("../data/res_sim.csv")
+parm_true <- t(as.matrix(c(lambda_true, mu_true, sigma_true)))
+names(parm_true) <- l_m$parm_names
+quantity_true <- compute_metric_particle(data, p_p, l_m, true_parms, method = "none")$estimates
+quantity_true <- quantity_true %>% mutate(parm_values = ifelse(parm_names == "LR", 0.55, parm_values))
+
+quantity_titles <- c(TeX(r'($\lambda$)'), TeX(r'($\mu$)'), "Sigma", "P(N=0)", "Loss Ratio", "Claim Frequency", "Claim Amount", "Total Claim Amount" )
+
+i <- 1
+for(quantity in quantity_true$parm_names){
+  (post_boxplot <- ggplot(data = df_sim %>% filter(parm_names == quantity)) + geom_boxplot(mapping = aes(y = parm_values, x = as.factor(ss), color = method)) + ggplot2::geom_hline(data = quantity_true %>%filter(parm_names == quantity) ,ggplot2::aes(yintercept=parm_values),color="black", linetype="dashed") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::labs(x= "Sample size", color = "",  title = quantity_titles[i], y = ""))
+
+  ggsave(paste0("../figures/post_boxplot_simu_All_",quantity, ".pdf"), post_boxplot)
+  i <- i + 1
+}
+
+```
+
