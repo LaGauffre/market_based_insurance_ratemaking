@@ -133,7 +133,7 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
   # inter_prob <- kde$estimate
   inter_prob <- ks::dmvnorm.mixt(cloud[, random_parms],
                mus = old_cloud[indices, random_parms],
-               Sigmas=matrix(rep(2 * w.cov[random_parms,random_parms], length(indices)), ncol = 2, byrow = TRUE),
+               Sigmas=matrix(rep(2 * w.cov[random_parms,random_parms], length(indices)), ncol = length(random_parms), byrow = TRUE),
                props = w[indices] / sum(w[indices]))
 
 
