@@ -276,7 +276,7 @@ In 3D
 
 ```{r}
 # Pure premium calculation for a range of risk model parameters
-sigmas<- seq(0.2, 2, 0.2); mus <- seq(-2, 2, 0.2); lambdas <- seq(1, 4, 0.2)
+sigmas<- seq(0.4, 2, 0.2); mus <- seq(-1, 1, 0.2); lambdas <- seq(2, 4, 0.2)
 cloud <- as.matrix(expand.grid(lambdas, mus,sigmas))
 colnames(cloud) <- l_m$parm_names
 X <- sample_X(l_m , cloud, R = 5000)
@@ -289,6 +289,13 @@ df_ds <- cbind(df_ds, ds)
 print(df_ds[df_ds$ds == min(df_ds$ds),])
 
 ```
+
+```{r}
+print(df_ds[df_ds$ds == min(df_ds$ds),])
+ggplot(data = df_ds) + geom_line(mapping = aes(x = 1: nrow(df_ds), y = ds, color = as.factor(mu)))
+nrow(df_ds)
+```
+
 ```{r}
 # Prior settings for the parameters
 prior_lambda <- prior_dist("uniform", "lambda",c(0, 10))
@@ -298,7 +305,7 @@ prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
 model_prior <- independent_priors(prior_distributions)
 
 # Settings for the abc algorithm
-popSize <- 1000;  MC_R<- 1000; acc <- 0.01; sp_bounds <- c(1, 1)
+popSize <- 500;  MC_R<- 500; acc <- 0.005; sp_bounds <- c(1, 1)
 data <- df_pp[,c("r", "d", "l")]
 data["x"] <- df_pp$pp
 res_abc <- abc(data, model_prior, l_m, p_p, popSize, MC_R, acc, sp_bounds)
@@ -322,6 +329,36 @@ ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mappi
 
 ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=sigma, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\sigma$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,3]), color="black",
                                    linetype="dashed")
+```
+```{r}
+cloud_dfs[[length(res_abc$ds)]][res_abc$ds[[length(res_abc$ds)]] == min(res_abc$ds[[length(res_abc$ds)]]),]
+```
+# II - Identifiability despise the loading function. 
+
+We do not have access to the pure premium, instead we have the commercial premiums
+$$
+\pi_i = f_i\left[\mathbb{E}(g_i(X))\right],\text{ }i = 1,\ldots, n,
+$$
+
+where the loading functions must be approximated. We therefore have to choose a model $f$ such that 
+
+$$
+\pi_i = f(p_{i}^\theta),\text{ }i = 1,\ldots, n  
+$$
+and hope that there exists a unique $\theta^*$ such that 
+
+$$
+\theta^* = \underset{\theta\in \Theta}{\text{argmin}}\, d\left[\pi_{1:n},f(p_{1:n}^\theta)\right].
+$$
+This typically depends on the choice for $f$ we consider isotonic and linear.
+
+```{r}
+
+```
+
+
+```{r}
+
 ```
 
 
