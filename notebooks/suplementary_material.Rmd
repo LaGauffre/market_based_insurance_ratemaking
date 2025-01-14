@@ -310,6 +310,7 @@ data <- df_pp[,c("r", "d", "l")]
 data["x"] <- df_pp$pp
 res_abc <- abc(data, model_prior, l_m, p_p, popSize, MC_R, acc, sp_bounds)
 ```
+
 ```{r}
 # We retrieve the cloud of particles associated to each generation
 cloud_dfs <- lapply(res_abc$Clouds, as.data.frame)
@@ -330,9 +331,7 @@ ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mappi
 ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=sigma, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\sigma$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,3]), color="black",
                                    linetype="dashed")
 ```
-```{r}
-cloud_dfs[[length(res_abc$ds)]][res_abc$ds[[length(res_abc$ds)]] == min(res_abc$ds[[length(res_abc$ds)]]),]
-```
+
 # II - Identifiability despise the loading function. 
 
 We do not have access to the pure premium, instead we have the commercial premiums
@@ -350,17 +349,104 @@ and hope that there exists a unique $\theta^*$ such that
 $$
 \theta^* = \underset{\theta\in \Theta}{\text{argmin}}\, d\left[\pi_{1:n},f(p_{1:n}^\theta)\right].
 $$
-This typically depends on the choice for $f$ we consider isotonic and linear.
+This typically depends on the choice for $f$ we consider isotonic and linear. Isotonic regression impose monotonicity which is desirable since we believe it would make sense if 
+
+$$
+p_i > p_j\Rightarrow \pi_i > \pi_j.
+$$
+Furthermore isotonic regression is non parametric which mitigate the risk of misspecification. The drawback is overfitting as perfect interpolation of may occur in a small sample size setting. 
 
 ```{r}
+data <- df_pp[,c("r", "d", "l")]
+data["x"] <- df_pp$pp
+ths_premium <- as.matrix(data[p_p$parm_names])
+lambda_true <- 3; mu_true <- 0; sigma_true <- 1
 
+# Sigma --------------
+# Pure premium calculation for a range of risk model parameters
+sigmas <- seq(0.1, 2, 0.05)
+cloud <- as.matrix(expand.grid(c(3), c(0),sigmas))
+colnames(cloud) <- l_m$parm_names
+X <- sample_X(l_m , cloud, R = 10000)
+pp_fake <- compute_pure_premia(X, coverage_type = "xs", ths_premium)
+# Calculation of the RMSE between true and wrong commercial premium
+ress_iso <- lapply(1:ncol(pp_fake), function(k) isoreg(pp_fake[, k], df_pp$pp))
+fs <- lapply(ress_iso, function(res_iso) stepfun(sort(res_iso$x), c(min(res_iso$yf) /2 ,
+                                                                      res_iso$yf), f = 1))
+ds <- sapply(1:nrow(cloud), function(k) mean((fs[[k]](pp_fake[, k]) - data$x)^2)^(1/2)) 
+df_ds <- data.frame(cloud)
+df_ds <- cbind(df_ds, ds)
+ggplot(data = df_ds) + geom_line(mapping = aes(x = sigma, y = ds))
+
+# Lambda --------------
+lambdas <- seq(0.1, 5, 0.1)
+cloud <- as.matrix(expand.grid(lambdas, c(0),c(1)))
+colnames(cloud) <- l_m$parm_names
+X <- sample_X(l_m , cloud, R = 10000)
+pp_fake <- compute_pure_premia(X, coverage_type = "xs", ths_premium)
+                                                                     
+# Calculation of the RMSE between true and wrong pure premium
+ress_iso <- lapply(1:ncol(pp_fake), function(k) isoreg(pp_fake[, k], df_pp$pp))
+fs <- lapply(ress_iso, function(res_iso) stepfun(sort(res_iso$x), c(min(res_iso$yf) /2 ,
+                                                                      res_iso$yf), f = 1))
+ds <- sapply(1:nrow(cloud), function(k) mean((fs[[k]](pp_fake[, k]) - data$x)^2)^(1/2)) 
+df_ds <- data.frame(cloud)
+df_ds <- cbind(df_ds, ds)
+ggplot(data = df_ds) + geom_line(mapping = aes(x = lambda, y = ds))
+
+# mu --------------
+mus <- seq(-3, 3, 0.1)
+cloud <- as.matrix(expand.grid(c(3), mus,c(1)))
+colnames(cloud) <- l_m$parm_names
+X <- sample_X(l_m , cloud, R = 10000)
+pp_fake <- compute_pure_premia(X, coverage_type = "xs", ths_premium)
+                                                                     
+# Calculation of the RMSE between true and wrong pure premium
+ress_iso <- lapply(1:ncol(pp_fake), function(k) isoreg(pp_fake[, k], df_pp$pp))
+fs <- lapply(ress_iso, function(res_iso) stepfun(sort(res_iso$x), c(min(res_iso$yf) /2 ,
+                                                                      res_iso$yf), f = 1))
+ds <- sapply(1:nrow(cloud), function(k) mean((fs[[k]](pp_fake[, k]) - data$x)^2)^(1/2)) 
+df_ds <- data.frame(cloud)
+df_ds <- cbind(df_ds, ds)
+ggplot(data = df_ds) + geom_line(mapping = aes(x = mu, y = ds))
 ```
 
 
 ```{r}
+# Prior settings for the parameters
+prior_lambda <- prior_dist("uniform", "lambda",c(0, 5))
+prior_mu <- prior_dist("uniform", "mu",c(-3,3))
+prior_sigma <- prior_dist("uniform", "sigma", c(0, 2))
+prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
+model_prior <- independent_priors(prior_distributions)
 
+# Settings for the abc algorithm
+popSize <- 500;  MC_R<- 500; acc <- 0.001; sp_bounds <- c(0.8, 1.2)
+data <- df_pp[,c("r", "d", "l")]
+data["x"] <- df_pp$pp
+res_abc <- abc(data, model_prior, l_m, p_p, popSize, MC_R, acc, sp_bounds, eps_min = 0.01)
 ```
 
+```{r}
+# We retrieve the cloud of particles associated to each generation
+cloud_dfs <- lapply(res_abc$Clouds, as.data.frame)
+cloud_df <- do.call(rbind, cloud_dfs)
+cloud_df$generation <- sort(rep(1:length(res_abc$Clouds), popSize))
+cloud_df_plot <- rbind(
+  data.frame(parm = cloud_df$lambda, parm_name = "lambda", generation = cloud_df$generation),
+  data.frame(parm = cloud_df$sigma, parm_name = "sigma", generation = cloud_df$generation)
+)
+cloud_df_plot$parm_name <-as.factor(cloud_df_plot$parm_name) 
+levels(cloud_df_plot$parm_name) <- c(lambda = TeX("$\\lambda$"), sigma = TeX("$\\sigma$"))
+ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=lambda, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\lambda$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,1]), color="black",
+                                   linetype="dashed")
+
+ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=mu, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\mu$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,2]), color="black",
+                                   linetype="dashed")
+
+ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=sigma, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\sigma$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,3]), color="black",
+                                   linetype="dashed")
+```
 
 ## Figure 2
 

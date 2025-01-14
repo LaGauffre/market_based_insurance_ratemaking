@@ -115,8 +115,8 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
                                                                           res_iso$yf), f = 1))
       ds_temp <- sapply(1:nrow(new_cloud), function(k) mean((fs[[k]](pp_fake[, k]) - data$x)^2)^(1/2)) + ds1 + ds2
 
-      cloud <- rbind(cloud, new_cloud[ds_temp < sample_res$eps, ])
-      ds <- c(ds, ds_temp[ds_temp < sample_res$eps])
+      cloud <- rbind(cloud, new_cloud[ds_temp < max(sample_res$eps, 10^(-8)), ])
+      ds <- c(ds, ds_temp[ds_temp < max(sample_res$eps, 10^(-8))])
 
     }else{
       cloud <- cloud; ds <- ds
