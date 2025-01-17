@@ -14,13 +14,15 @@ getwd()
 ```
 Let $X$ be a random variable that represents the total health related over a given time period, say one year, associated to a pet. Our goal is to find the parameter $\theta$ that best explains our market data made of insurance quotes
 $$
-\pi_i = f_i\left[\mathbb{E}(g_i(X))\right],\text{ }i = 1,\ldots, n,
+\tilde{p}_i = f_i\left[\mathbb{E}(g_i(X))\right],\text{ }i = 1,\ldots, n,
 $$
 where $g_i$ are the coverage functions and $f_i$ are the loading function. The coverage functions are known and of the form
 $$
 g(x) = \min(\max(r\cdot x - d, 0), l),
 $$
-where $r$ is the rate of coverage, $d$ is the deductible and $l$ is the limit.The loading functions are unknown and will be approximated by a generic function $f$. In the first section we consider the problem of finding $\theta$ if $f_i(x)=x$ for all $i$ which is equivalent to having access to the pure premiums 
+where $r$ is the rate of coverage, $d$ is the deductible and $l$ is the limit.The loading functions are unknown and will be approximated by a generic function $f$. 
+
+In the first section we consider the problem of finding $\theta$ if we know access to the pure premiums 
 
 $$
 p_i = \left[\mathbb{E}(g_i(X))\right],\text{ }i = 1,\ldots, n,
@@ -78,7 +80,7 @@ $$
 g_1 = 0.85\cdot X\text{, } g_2 = \max(X - 1.8, 0) \text{, and }g_3 = \min(X, 6)
 $$
 
-it is equivalent to the coverages $(r_1 = 0.85, d_1 = 0, l_1 = \infty)$, $(r_1 = 1, d_1 = 1.8, l_1 = \infty)$, and $(r_1 = 1, d_1 = 0, l_1 = 6)$. 
+it is equivalent to the coverages $(r_1 = 0.85, d_1 = 0, l_1 = \infty)$, $(r_2 = 1, d_2 = 1.8, l_2 = \infty)$, and $(r_3 = 1, d_3 = 0, l_3 = 6)$. 
 
 ```{r}
 ## Characteristics of the pure premium which depends on the parameter of the insurance coverage
@@ -89,6 +91,7 @@ n <- 3; r <- c(0.75, 1, 1); d <- c(0, 1.8, 0); l <- c(Inf, Inf, 6)
 ## Data frame with the insurance coverage parameters and the pure premium
 th_premium <- matrix(c(r, d, l), nrow = n)
 pps <- compute_pure_premia(X_true, coverage_type = "xs", th_premium)
+sds <- sd_pure_premia(X_true, coverage_type = "xs", th_premium)
 df_pp <- data.frame(r = r, d = d, l = l, pp=pps)
 df_pp
 ```
@@ -97,7 +100,7 @@ The pure premium computed above corresponds to a well specified case where there
 $$
 d\left[p_{1:n},p_{1:n}^{\theta^{\ast}}\right] = 0
 $$
-We can check the uniqueness empirically, first in one dimension
+Note that we assign the same weight to each if the pre premium. We can check the uniqueness empirically, first in one dimension as we plot the functions $\sigma\mapsto d\left[p_{1:n},p_{1:n}^{\theta^{\ast}}\right]\Big\rvert_{\mu =0, \lambda = 3}$, $\mu\mapsto d\left[p_{1:n},p_{1:n}^{\theta^{\ast}}\right]\Big\rvert_{\sigma =1, \lambda = 3}$, and $\lambda\mapsto d\left[p_{1:n},p_{1:n}^{\theta^{\ast}}\right]\Big\rvert_{\mu =0, \sigma = 1}$  
 
 ```{r}
 data <- df_pp[,c("r", "d", "l")]
@@ -117,7 +120,8 @@ pp_fake <- compute_pure_premia(X, coverage_type = "xs", ths_premium)
 ds <- sapply(1:nrow(cloud), function(k) mean((pp_fake[, k] - data$x)^2)^(1/2)) 
 df_ds <- data.frame(cloud)
 df_ds <- cbind(df_ds, ds)
-ggplot(data = df_ds) + geom_line(mapping = aes(x = sigma, y = ds))
+(sig_pure_RMSE <- ggplot(data = df_ds) + geom_line(mapping = aes(x = sigma, y = ds)) +  ggplot2::theme_classic(base_size = 14) + labs(x = expression(sigma), title = "RMSE", y = "") )
+ggsave("../figures/sig_pure_RMSE.pdf", sig_pure_RMSE)
 
 # Lambda --------------
 lambdas <- seq(0.1, 5, 0.1)
@@ -130,7 +134,8 @@ pp_fake <- compute_pure_premia(X, coverage_type = "xs", ths_premium)
 ds <- sapply(1:nrow(cloud), function(k) mean((pp_fake[, k] - data$x)^2)^(1/2)) 
 df_ds <- data.frame(cloud)
 df_ds <- cbind(df_ds, ds)
-ggplot(data = df_ds) + geom_line(mapping = aes(x = lambda, y = ds))
+(lambda_pure_RMSE <- ggplot(data = df_ds) + geom_line(mapping = aes(x = lambda, y = ds)) +  ggplot2::theme_classic(base_size = 14) + labs(x = expression(lambda), title = "RMSE", y = "") )
+ggsave("../figures/lambda_pure_RMSE.pdf", lambda_pure_RMSE)
 
 # mu --------------
 mus <- seq(-3, 3, 0.1)
@@ -143,10 +148,69 @@ pp_fake <- compute_pure_premia(X, coverage_type = "xs", ths_premium)
 ds <- sapply(1:nrow(cloud), function(k) mean((pp_fake[, k] - data$x)^2)^(1/2)) 
 df_ds <- data.frame(cloud)
 df_ds <- cbind(df_ds, ds)
-ggplot(data = df_ds) + geom_line(mapping = aes(x = mu, y = ds))
+(mu_pure_RMSE <- ggplot(data = df_ds) + geom_line(mapping = aes(x = mu, y = ds)) +  ggplot2::theme_classic(base_size = 14) + labs(x = expression(mu), title = "RMSE", y = "") )
+ggsave("../figures/mu_pure_RMSE.pdf", mu_pure_RMSE)
+```
+Each parameters can be identified separately, now of course identifying them all togethre is another matter, there might exists several combinations of parameter that yield the same pure premium. Our optimization allows us to investigate by searching efficiently the parameter space. 
+
+We use the follwing prior assumptions:
+$$
+\lambda\sim\text{Unif}(0, 10)\text{, }\mu\sim\text{Unif}(-3, 3)\text{, and }\sigma\sim\text{Unif}(0, 5)
+$$
+and the following settings for the algorithm
+
+$$
+J = 500\text{ and }R = 500
+$$
+Recall that $J$ is the population size of the clouds of particles and $R$ is the number of Monte Carlo replications. 
+
+```{r}
+# Prior settings for the parameters
+prior_lambda <- prior_dist("uniform", "lambda",c(0, 10))
+prior_mu <- prior_dist("uniform", "mu",c(-3,3))
+prior_sigma <- prior_dist("uniform", "sigma", c(0, 5))
+prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
+model_prior <- independent_priors(prior_distributions)
+
+# Settings for the abc algorithm
+popSize <- 500;  MC_R<- 500; acc <- 10; sp_bounds <- c(1, 1); eps_min <- 0.02
+
+sum(sds/sqrt(MC_R)^2)
+
+data <- df_pp[,c("r", "d", "l")]
+data["x"] <- df_pp$pp
+res_abc <- abc(data, model_prior, l_m, p_p, popSize, MC_R, acc, sp_bounds, eps_min)
 ```
 
-Even if the model is misspecified it looks like we get a unique minimu in each dimension
+```{r}
+# We retrieve the cloud of particles associated to each generation
+cloud_dfs <- lapply(res_abc$Clouds, as.data.frame)
+cloud_df <- do.call(rbind, cloud_dfs)
+cloud_df$generation <- sort(rep(1:length(res_abc$Clouds), popSize))
+cloud_df_plot <- rbind(
+  data.frame(parm = cloud_df$lambda, parm_name = "lambda", generation = cloud_df$generation),
+  data.frame(parm = cloud_df$sigma, parm_name = "sigma", generation = cloud_df$generation)
+)
+cloud_df_plot$parm_name <-as.factor(cloud_df_plot$parm_name) 
+levels(cloud_df_plot$parm_name) <- c(lambda = TeX("$\\lambda$"), sigma = TeX("$\\sigma$"))
+
+(posterior_lambda <- ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=lambda, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\lambda$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,1]), color="black",
+                                   linetype="dashed"))
+ggsave("../figures/posterior_lambda_supp_mat.pdf", posterior_lambda)
+
+(posterior_mu <- ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=mu, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\mu$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,2]), color="black",
+                                   linetype="dashed"))
+ggsave("../figures/posterior_mu_supp_mat.pdf", posterior_mu)
+
+(posterior_sig <- ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=sigma, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\sigma$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,3]), color="black",
+                                   linetype="dashed"))
+ggsave("../figures/posterior_sig_supp_mat.pdf", posterior_sig)
+
+```
+
+
+
+Even if the model is misspecified it looks like we get a unique minimum in each dimension
 
 ```{r}
 data <- df_pp[,c("r", "d", "l")]
@@ -296,41 +360,7 @@ ggplot(data = df_ds) + geom_line(mapping = aes(x = 1: nrow(df_ds), y = ds, color
 nrow(df_ds)
 ```
 
-```{r}
-# Prior settings for the parameters
-prior_lambda <- prior_dist("uniform", "lambda",c(0, 10))
-prior_mu <- prior_dist("uniform", "mu",c(-3,3))
-prior_sigma <- prior_dist("uniform", "sigma", c(0, 5))
-prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
-model_prior <- independent_priors(prior_distributions)
 
-# Settings for the abc algorithm
-popSize <- 500;  MC_R<- 500; acc <- 0.005; sp_bounds <- c(1, 1)
-data <- df_pp[,c("r", "d", "l")]
-data["x"] <- df_pp$pp
-res_abc <- abc(data, model_prior, l_m, p_p, popSize, MC_R, acc, sp_bounds)
-```
-
-```{r}
-# We retrieve the cloud of particles associated to each generation
-cloud_dfs <- lapply(res_abc$Clouds, as.data.frame)
-cloud_df <- do.call(rbind, cloud_dfs)
-cloud_df$generation <- sort(rep(1:length(res_abc$Clouds), popSize))
-cloud_df_plot <- rbind(
-  data.frame(parm = cloud_df$lambda, parm_name = "lambda", generation = cloud_df$generation),
-  data.frame(parm = cloud_df$sigma, parm_name = "sigma", generation = cloud_df$generation)
-)
-cloud_df_plot$parm_name <-as.factor(cloud_df_plot$parm_name) 
-levels(cloud_df_plot$parm_name) <- c(lambda = TeX("$\\lambda$"), sigma = TeX("$\\sigma$"))
-ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=lambda, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\lambda$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,1]), color="black",
-                                   linetype="dashed")
-
-ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=mu, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\mu$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,2]), color="black",
-                                   linetype="dashed")
-
-ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=sigma, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\sigma$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,3]), color="black",
-                                   linetype="dashed")
-```
 
 # II - Identifiability despise the loading function. 
 

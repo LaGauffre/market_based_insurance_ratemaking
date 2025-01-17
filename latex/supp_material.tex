@@ -1,0 +1,208 @@
+%!TEX spellcheck
+\documentclass[10pt]{article}
+\renewcommand{\baselinestretch}{1.5} 
+% \documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amscd, amsfonts, amsmath, amssymb, amstext, amsthm, caption, epsfig, fancyhdr, float, graphicx, latexsym, mathtools, multicol, multirow, algorithm, chngcntr}
+\usepackage{kpfonts}
+\usepackage[lofdepth,lotdepth]{subfig}
+% \usepackage{subcaption}
+\usepackage{authblk}
+\usepackage[utf8]{inputenc}
+\usepackage{bm} 
+\usepackage{enumerate}
+\usepackage{relsize}
+\usepackage{booktabs}
+\usepackage[numbers]{natbib}
+\usepackage{color}
+\usepackage{bm}
+\usepackage{parskip}
+
+\usepackage[pdfpagelabels,colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,filecolor=blue,menucolor=blue,runcolor=blue,urlcolor=blue]{hyperref}
+
+\usepackage{algpseudocode} % Loading after hyperref
+
+% For PGF plots
+\usepackage{pgf}
+\usepackage[utf8]{inputenc}\DeclareUnicodeCharacter{2212}{-}
+
+\usepackage{caption}
+\captionsetup{skip=0.5em}
+
+\usepackage[capitalise,nameinlink,noabbrev]{cleveref}
+\crefname{equation}{}{}
+\crefname{enumi}{}{}
+
+% Load images from subdirectory
+\graphicspath{{Figures/}}
+
+% To fix some warnings: https://tex.stackexchange.com/questions/177025/hyperref-cleveref-and-algpseudocode-same-identifier-warning
+\makeatletter
+\newcounter{algorithmicH}% New algorithmic-like hyperref counter
+\let\oldalgorithmic\algorithmic
+\renewcommand{\algorithmic}{%
+  \stepcounter{algorithmicH}% Step counter
+  \oldalgorithmic}% Do what was always done with algorithmic environment
+\renewcommand{\theHALG@line}{ALG@line.\thealgorithmicH.\arabic{ALG@line}}
+\makeatother
+
+% \newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\makeatletter
+\DeclareCaptionLabelFormat{andtable}{#1~#2  \&  \tablename~\thetable}
+\makeatletter
+
+% https://tex.stackexchange.com/questions/76273/multiple-pdfs-with-page-group-included-in-a-single-page-warning
+\pdfsuppresswarningpagegroup=1
+
+% \newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+\makeatletter
+\DeclareCaptionLabelFormat{andtable}{#1~#2  \&  \tablename~\bm{\theta}ble}
+\makeatletter
+
+% % only equations which are labeled AND referenced will be numbered.
+% \usepackage{autonum}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{theo}{Theorem}
+\newtheorem{coro}{Corollary}
+\newtheorem{prop}{Proposition}
+\newtheorem{property}{Property}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{ex}{Example}
+\newtheorem{definition}{Definition}
+\newtheorem{hp}{Assumption}
+\newtheorem{pb}{Problem}
+
+% Distributions.
+\newcommand*{\UnifDist}{\mathsf{Unif}}
+\newcommand*{\ExpDist}{\mathsf{Exp}}
+\newcommand*{\DepExpDist}{\mathsf{DepExp}}
+\newcommand*{\GammaDist}{\mathsf{Gamma}}
+\newcommand*{\LognormalDist}{\mathsf{LogNorm}}
+\newcommand*{\WeibullDist}{\mathsf{Weib}}
+\newcommand*{\ParetoDist}{\mathsf{Par}}
+\newcommand*{\NormalDist}{\mathsf{Normal}}
+
+\newcommand*{\GeometricDist}{\mathsf{Geom}}
+\newcommand*{\BernouilliDist}{\mathsf{Ber}}
+\newcommand*{\NegBinomialDist}{\mathsf{NegBin}}
+\newcommand*{\BinomialDist}{\mathsf{Bin}}
+\newcommand*{\PoissonDist}{\mathsf{Poisson}}
+\newcommand*{\BivariatePoissonDist}{\mathsf{BPoisson}}
+\newcommand*{\CyclicalPoissonDist}{\mathsf{CPoisson}}
+
+% Sets of numbers.
+\newcommand*{\RL}{\mathbb{R}}
+\newcommand*{\NZ}{\mathbb{N}_0}
+% \newcommand*{\NL}{\mathbb{N}_+}
+
+\newcommand*{\cond}{\mid}
+\newcommand*{\given}{\,;\,}
+
+% Regarding spacing and abbreviations.
+\usepackage{xspace}
+
+% Acronyms
+% \@\xspace doesn't add space if next char is punctuation
+% However, these will give 2 .'s if used at end of sentence.
+\newcommand*{\eg}{e.g.\@\xspace}
+\newcommand*{\ie}{i.e.\@\xspace}
+
+\newcommand*{\iid}{\textsc{iid}\@\xspace}
+\newcommand*{\pdf}{\textsc{pdf}\@\xspace}
+\newcommand*{\pmf}{\textsc{pmf}\@\xspace}
+\newcommand*{\abc}{{\textsc{abc}}\@\xspace}
+\newcommand*{\iso}{{\textsc{iso}}\@\xspace}
+\newcommand*{\smc}{\textsc{smc}\@\xspace}
+\newcommand*{\mcmc}{\textsc{mcmc}\@\xspace}
+\newcommand*{\ess}{\textsc{ess}\@\xspace}
+\newcommand*{\mle}{\textsc{mle}\@\xspace}
+\newcommand*{\bic}{\textsc{bic}\@\xspace}
+\newcommand*{\kde}{\textsc{kde}\@\xspace}
+\newcommand*{\glm}{\textsc{glm}\@\xspace}
+\newcommand*{\xol}{\textsc{xol}\@\xspace}
+\newcommand*{\cpu}{\textsc{cpu}\@\xspace}
+\newcommand*{\gpu}{\textsc{gpu}\@\xspace}
+\newcommand*{\arm}{\textsc{arm}\@\xspace}
+\newcommand*{\map}{\textsc{map}\@\xspace}
+\newcommand*{\bp}{\textsc{bp}\@\xspace}
+\newcommand*{\mode}{\textsc{mode}\@\xspace}
+
+\newcommand*{\iidSim}{\overset{\text{\iid}}{\sim}}
+\newcommand*{\bt}{\bm{\bm{\theta}}}
+\newcommand*{\bTheta}{\bm{\bm{\theta}}}
+\newcommand*{\bbeta}{\bm{\beta}}
+\newcommand*{\bn}{\bm{n}}
+\newcommand*{\bs}{\bm{s}}
+\newcommand*{\bu}{\bm{u}}
+\newcommand*{\bv}{\bm{v}}
+\newcommand*{\bx}{\bm{x}}
+\newcommand*{\by}{\bm{y}}
+\newcommand*{\bH}{\bm{H}}
+
+% Roman versions of things.
+\newcommand*{\dd}{\mathop{}\!\mathrm{d}}
+\newcommand*{\e}{\mathrm{e}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand*{\norm}[1]{\lVert{} #1\rVert}
+\newcommand*{\Dis}{\mathcal{D}}
+\newcommand*{\Was}{\mathcal{W}}
+\newcommand*{\argdot}{\,\cdot\,}
+\newcommand*{\Oh}{\mathcal{O}} % Big-O notation
+
+% \DeclarePairedDelimiterXPP{\ind}[1]{\ind_}{\{}{\}}{}{#1}
+\newcommand*{\ind}{\mathbb{I}}
+
+% The specific colours used in our figures.
+\definecolor{MyBlue}{HTML}{1f77b4}
+\definecolor{MyGreen}{HTML}{2ca02c}
+\definecolor{MyRed}{HTML}{d62728}
+\definecolor{MyPurple}{HTML}{9467bd}
+\definecolor{MyBrown}{HTML}{8c564b}
+
+% Commands to have coloured text in the captions.
+\newcommand*{\CapBlue}[1]{\textcolor{MyBlue}{\textbf{#1}}}
+\newcommand*{\CapGreen}[1]{\textcolor{MyGreen}{\textbf{#1}}}
+\newcommand*{\CapRed}[1]{\textcolor{MyRed}{\textbf{#1}}}
+\newcommand*{\CapPurple}[1]{\textcolor{MyPurple}{\textbf{#1}}}
+\newcommand*{\CapBrown}[1]{\textcolor{MyBrown}{\textbf{#1}}}
+\newcommand*{\CapBlack}[1]{\textbf{#1}}
+
+\usepackage[percent]{overpic}
+\newcommand{\float}[1]{\makebox[0pt]{#1}}
+\newcommand{\subfig}[1]{\float{\Large #1}}
+\newcommand{\subfigsmall}[1]{\float{#1}}
+
+\usepackage{float}
+\usepackage{microtype}
+
+\renewcommand{\tilde}{\widetilde}
+\renewcommand{\hat}{\widehat}
+
+\usepackage{cancel}
+
+\renewcommand*{\bibfont}{\small}
+\usepackage[marginratio=1:1,height=584pt,width=480pt,tmargin=90pt]{geometry}
+
+\begin{document}
+
+\title{Online supplement for "Market-based insurance ratemaking\color{blue}: application to pet insurance\color{black}"}
+\author[1]{Pierre-Olivier Goffard \footnote{Email: \href{mailto:goffard@unistra.fr}{goffard@unistra.fr}.}}
+\author[2,3]{Pierrick Piette\footnote{Email: \href{mailto:pierrick.piette@gmail.com}{pierrick.piette@gmail.com}.}}
+\author[4]{Gareth W. Peters\footnote{Email: \href{mailto:garethpeters@ucsb.edu}{garethpeters@ucsb.edu}.}}
+\affil[1]{\footnotesize Université de Strasbourg, Institut de Recherche Mathématique Avancée, Strasbourg, France}
+\affil[2]{\footnotesize Univ Lyon, Université Claude Bernard Lyon 1, Institut de Science Financière et d’Assurances (ISFA), Laboratoire SAF EA2429, F-69366, Lyon, France}
+\affil[3]{\footnotesize  Seyna, 10 Rue du Faubourg Montmartre 75009 Paris}
+\affil[4]{\footnotesize  University of California Santa Barbara, Department of Statistics and Applied Probability, Santa Barbara CA 93106-3110, USA}
+
+\maketitle
+\vspace{3mm}
+
+
+\bibliographystyle{plainnat}
+\bibliography{abc_no_data}
+
+
+\end{document}
