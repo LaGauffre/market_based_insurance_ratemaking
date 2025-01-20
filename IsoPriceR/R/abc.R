@@ -115,8 +115,8 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
                                                                           res_iso$yf), f = 1))
       ds_temp <- sapply(1:nrow(new_cloud), function(k) mean((fs[[k]](pp_fake[, k]) - data$x)^2)^(1/2)) + ds1 + ds2
 
-      cloud <- rbind(cloud, new_cloud[ds_temp < sample_res$eps + 10^(-8), ])
-      ds <- c(ds, ds_temp[ds_temp < sample_res$eps + 10^(-8)])
+      cloud <- rbind(cloud, new_cloud[ds_temp <= eps , ])
+      ds <- c(ds, ds_temp[ds_temp <= eps ])
 
     }else{
       cloud <- cloud; ds <- ds
@@ -153,22 +153,20 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
   # )
   w.cov <- cov.wt(cloud[, l_m$parm_names], wt = w, cor = FALSE, center = TRUE)$cov
   sort_index <- order(ds)
-
   ESSs <- sapply(1:length(w), function(k) 1 / sum((w[sort_index][1:k] / sum(w[sort_index][1:k]))^2) )
   if(sum(ESSs > popSize / 2) == 0){
     indices <- sort_index
   }else{
     indices <- sort_index[1:which(ESSs > popSize/2)[1]]
   }
+  eps <- max(max(ds[indices]) - 10^(-8), eps_min)
 
-
-  eps <- max(ds[indices])
 
   # kde <- suppressWarnings(
   #   ks::kde(x = cloud[indices, random_parms], H =  2 * w.cov[random_parms,random_parms],
   #           # eval.points = cloud[indices, random_parms] ,
   #           w = w[indices]))
-  return(list(cloud = cloud, ds = ds, indices = indices, eps = max(ds[indices]), ESS = sum(w[indices])^2/sum(w[indices]^2), w = w, w.cov = w.cov))
+  return(list(cloud = cloud, ds = ds, indices = indices, eps = eps, ESS = sum(w[indices])^2/sum(w[indices]^2), w = w, w.cov = w.cov))
 }
 
 
@@ -180,7 +178,7 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
 #' @param p_p objecte of type pure_premium
 #' @param popSize Size of the cloud of particles
 #' @param MC_R Number of replication foer the Monte Carlo estimation of tghe pure premiums
-#' @param acc scalar, level of accuracy taht is the difference between to consecutive tolerance level (epsilon)
+#' @param acc scalar, level of accuracy that is the difference between to consecutive tolerance level (epsilon)
 #'
 #' @return A list containing all the clouds and the distance to the real data for each particle.
 #' @export
