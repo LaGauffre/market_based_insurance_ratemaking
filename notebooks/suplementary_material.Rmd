@@ -422,14 +422,14 @@ sigmas[ds_lm == min(ds_lm)]
 
 ```{r}
 # Prior settings for the parameters
-prior_lambda <- prior_dist("uniform", "lambda",c(0, 5))
-prior_mu <- prior_dist("uniform", "mu",c(-3,3))
+prior_lambda <- prior_dist("constant", "lambda",c(3))
+prior_mu <- prior_dist("constant", "mu",c(0))
 prior_sigma <- prior_dist("uniform", "sigma", c(0, 2))
 prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
 model_prior <- independent_priors(prior_distributions)
 
 # Settings for the abc algorithm
-popSize <- 500;  MC_R<- 500; acc <- 0.01; sp_bounds <- c(10^(-16), Inf); eps_min <- 0.01
+popSize <- 1000;  MC_R<- 500; acc <- 0.01; sp_bounds <- c(10^(-16), Inf); eps_min <- 0.01
 res_abc <- abc(data, model_prior, l_m, p_p, popSize, MC_R, acc, sp_bounds, eps_min)
 ```
 
@@ -473,14 +473,14 @@ print(sigmas[ds_iso_reg==min(ds_iso_reg)]); print(min(ds_iso_reg))
 ```
 ```{r}
 # Prior settings for the parameters
-prior_lambda <- prior_dist("uniform", "lambda",c(0, 5))
-prior_mu <- prior_dist("uniform", "mu",c(-3,3))
+prior_lambda <- prior_dist("constant", "lambda",c(3))
+prior_mu <- prior_dist("constant", "mu",c(0,0))
 prior_sigma <- prior_dist("uniform", "sigma", c(0, 2))
 prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
 model_prior <- independent_priors(prior_distributions)
 
 # Settings for the abc algorithm
-popSize <- 5000;  MC_R<- 500; acc <- 0.002; sp_bounds <- c(min(df_pp$pp / data$x), max(df_pp$pp / data$x))
+popSize <- 100;  MC_R<- 500; acc <- 0.002; sp_bounds <- c(min(df_pp$pp / data$x), max(df_pp$pp / data$x))
 eps_min <- 0.002
 res_abc <- abc(data, model_prior, l_m, p_p, popSize, MC_R, acc, sp_bounds, eps_min)
 ```
