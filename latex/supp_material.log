@@ -1,6 +1,6 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.27)  17 JAN 2025 19:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.27)  21 JAN 2025 18:54
 entering extended mode
- \write18 enabled.
+ restricted \write18 enabled.
  %&-line parsing enabled.
 **supp_material.tex
 (./supp_material.tex
@@ -1216,12 +1216,13 @@ File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count363
 \l__pdf_internal_box=\box110
 )
-No file supp_material.aux.
+(./supp_material.aux)
 \openout1 = `supp_material.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/jkp/m/it on input line 189.
 LaTeX Font Info:    Trying to load font information for OML+jkp on input line 1
 89.
+
 (/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/omljkp.fd
 File: omljkp.fd 2006/08/15 v1.0
 )
@@ -1305,6 +1306,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 189.
 LaTeX Info: Redefining \pageref on input line 189.
 LaTeX Info: Redefining \nameref on input line 189.
+ (./supp_material.out) (./supp_material.out)
 \@outlinefile=\write4
 \openout4 = `supp_material.out'.
 
@@ -1413,38 +1415,694 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `jkp' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-
-No file supp_material.bbl.
-[1
+ [1
 
 {/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-(./supp_material.aux)
+Package microtype Info: Character `029' is missing
+(microtype)             in font `T1/jkp/m/sc/10'.
+(microtype)             Ignoring protrusion settings for this character.
+ [2]
+<../figures/lambda_pure_RMSE.pdf, id=55, 526.96875pt x 325.215pt>
+File: ../figures/lambda_pure_RMSE.pdf Graphic file (type pdf)
+<use ../figures/lambda_pure_RMSE.pdf>
+Package pdftex.def Info: ../figures/lambda_pure_RMSE.pdf  used on input line 27
+5.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+<../figures/mu_pure_RMSE.pdf, id=56, 526.96875pt x 325.215pt>
+File: ../figures/mu_pure_RMSE.pdf Graphic file (type pdf)
+<use ../figures/mu_pure_RMSE.pdf>
+Package pdftex.def Info: ../figures/mu_pure_RMSE.pdf  used on input line 279.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+<../figures/sig_pure_RMSE.pdf, id=57, 526.96875pt x 325.215pt>
+File: ../figures/sig_pure_RMSE.pdf Graphic file (type pdf)
+<use ../figures/sig_pure_RMSE.pdf>
+Package pdftex.def Info: ../figures/sig_pure_RMSE.pdf  used on input line 284.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    Freeze math alphabet allocation in version normal.
+(Font)              Allocated math groups: 14 (local: 2) on input line 296.
+LaTeX Font Info:    Trying to load font information for OT1+jkpss on input line
+ 296.
 
-Package rerunfilecheck Warning: File `supp_material.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/ot1jkpss.fd
+File: ot1jkpss.fd 2007/07/16 Fontinst v1.928 font definitions for OT1/jkpss.
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `jkpss' (encoding: OT1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 296.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 296.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 297.
+<../figures/posterior_lambda_supp_mat.pdf, id=58, 526.96875pt x 325.215pt>
+File: ../figures/posterior_lambda_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_lambda_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_lambda_supp_mat.pdf  used on inpu
+t line 304.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 304.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 304.
+<../figures/posterior_mu_supp_mat.pdf, id=59, 526.96875pt x 325.215pt>
+File: ../figures/posterior_mu_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_mu_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_mu_supp_mat.pdf  used on input li
+ne 308.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 308.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 308.
+<../figures/posterior_sig_supp_mat.pdf, id=60, 526.96875pt x 325.215pt>
+File: ../figures/posterior_sig_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_sig_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_sig_supp_mat.pdf  used on input l
+ine 312.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 312.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 312.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 313.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 313.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 313.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 313.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 313.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 313.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 318.
+ [3]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 321.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 321.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 321.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 321.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 323.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 323.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 324.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 329.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 330.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 331.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 331.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 331.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 331.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 331.
 
-Package rerunfilecheck Info: Checksums for `supp_material.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.
+Underfull \hbox (badness 10000) in paragraph at lines 330--332
+
+ []
+
+[4 <../figures/lambda_pure_RMSE.pdf> <../figures/mu_pure_RMSE.pdf> <../figures/
+sig_pure_RMSE.pdf>]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 333.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 333.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 333.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 333.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 335.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 335.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 335.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 337.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 337.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 337.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 337.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 338.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 339.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 339.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 341.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 341.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 341.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 341.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 343.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 343.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 344.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 347.
+ [5 <../figures/posterior_lambda_supp_mat.pdf> <../figures/posterior_mu_supp_ma
+t.pdf> <../figures/posterior_sig_supp_mat.pdf>]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 349.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 349.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 349.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 349.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 349.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 349.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 349.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 350.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 351.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 351.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 351.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 351.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 351.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 353.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 353.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 353.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 357.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 357.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 357.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 358.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 361.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 361.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 361.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 362.
+LaTeX Font Info:    Trying to load font information for T1+jkptt on input line 
+366.
+
+(/usr/local/texlive/2022/texmf-dist/tex/latex/kpfonts/t1jkptt.fd
+File: t1jkptt.fd 2007/01/26 Fontinst v1.928 font definitions for T1/jkptt.
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `jkptt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 366.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 366.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 366.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 366.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 366.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 366.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 366.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 366.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 366.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 367.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 367.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 367.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 367.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 368.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 368.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 368.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 368.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 369.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 369.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 370.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 370.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 372.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 372.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 373.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 373.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 374.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 376.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 376.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 376.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 376.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 376.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 376.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 376.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 376.
+ [6]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 379.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 380.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 380.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 382.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 382.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 383.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 384.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 386.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 386.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 386.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 386.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 386.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 386.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 386.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 387.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 390.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 390.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 390.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 390.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 390.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 390.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 390.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 391.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 392.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 392.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 394.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 394.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 394.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 394.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 394.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 394.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 394.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 394.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 394.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 395.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 396.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 396.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 400.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 400.
+ [7]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 401.
+<../figures/pp_cp_well_specified.pdf, id=143, 526.96875pt x 325.215pt>
+File: ../figures/pp_cp_well_specified.pdf Graphic file (type pdf)
+<use ../figures/pp_cp_well_specified.pdf>
+Package pdftex.def Info: ../figures/pp_cp_well_specified.pdf  used on input lin
+e 406.
+(pdftex.def)             Requested size: 335.99854pt x 207.36772pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 407.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 407.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 407.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 407.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 412.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 412.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 412.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 412.
+<../figures/rmse_sigma_iso.pdf, id=147, 526.96875pt x 325.215pt>
+File: ../figures/rmse_sigma_iso.pdf Graphic file (type pdf)
+<use ../figures/rmse_sigma_iso.pdf>
+Package pdftex.def Info: ../figures/rmse_sigma_iso.pdf  used on input line 419.
+
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 419.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 419.
+<../figures/rmse_sigma_linear.pdf, id=148, 526.96875pt x 325.215pt>
+File: ../figures/rmse_sigma_linear.pdf Graphic file (type pdf)
+<use ../figures/rmse_sigma_linear.pdf>
+Package pdftex.def Info: ../figures/rmse_sigma_linear.pdf  used on input line 4
+23.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 423.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 423.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 424.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 424.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 424.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 424.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 429.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 429.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 429.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 429.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 429.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 429.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 431.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 431.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 432.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 433.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 433.
+<../figures/posterior_sig_iso_supp_mat.pdf, id=153, 526.96875pt x 325.215pt>
+File: ../figures/posterior_sig_iso_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_sig_iso_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_sig_iso_supp_mat.pdf  used on inp
+ut line 437.
+(pdftex.def)             Requested size: 335.99854pt x 207.36772pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 438.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 438.
+
+[8 <../figures/pp_cp_well_specified.pdf>]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 443.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 443.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 443.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 443.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 445.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 445.
+ [9 <../figures/rmse_sigma_iso.pdf> <../figures/rmse_sigma_linear.pdf> <../figu
+res/posterior_sig_iso_supp_mat.pdf>]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 446.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 449.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 449.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 450.
+<../figures/posterior_lambda_wo_reg_supp_mat.pdf, id=193, 505.89pt x 505.89pt>
+File: ../figures/posterior_lambda_wo_reg_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_lambda_wo_reg_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_lambda_wo_reg_supp_mat.pdf  used 
+on input line 457.
+(pdftex.def)             Requested size: 191.99707pt x 192.00089pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 457.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 457.
+<../figures/posterior_mu_wo_reg_supp_mat.pdf, id=194, 505.89pt x 505.89pt>
+File: ../figures/posterior_mu_wo_reg_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_mu_wo_reg_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_mu_wo_reg_supp_mat.pdf  used on i
+nput line 461.
+(pdftex.def)             Requested size: 191.99707pt x 192.00089pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 461.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 461.
+<../figures/posterior_sig_wo_reg_supp_mat.pdf, id=195, 505.89pt x 505.89pt>
+File: ../figures/posterior_sig_wo_reg_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_sig_wo_reg_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_sig_wo_reg_supp_mat.pdf  used on 
+input line 465.
+(pdftex.def)             Requested size: 191.99707pt x 192.00089pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 465.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 465.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 466.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 466.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 466.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 466.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 466.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 466.
+
+(./supp_material.bbl
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 13.
+) [10] [11 <../figures/posterior_lambda_wo_reg_supp_mat.pdf> <../figures/poster
+ior_mu_wo_reg_supp_mat.pdf> <../figures/posterior_sig_wo_reg_supp_mat.pdf>] (./
+supp_material.aux)
+Package rerunfilecheck Info: File `supp_material.out' has not changed.
+(rerunfilecheck)             Checksum: 481B847661A087875DC022A27D2181F8;724.
  ) 
 Here is how much of TeX's memory you used:
- 27440 strings out of 478268
- 489071 string characters out of 5846347
- 766733 words of memory out of 5000000
- 45029 multiletter control sequences out of 15000+600000
- 552038 words of font info for 205 fonts, out of 8000000 for 9000
+ 28212 strings out of 478268
+ 503245 string characters out of 5846347
+ 778995 words of memory out of 5000000
+ 45386 multiletter control sequences out of 15000+600000
+ 669095 words of font info for 468 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 70i,6n,76p,1010b,364s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/kpfonts/kpfonts-expert.en
-c}{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
-exlive/2022/texmf-dist/fonts/type1/public/kpfonts/jkpmn8a.pfb></usr/local/texli
-ve/2022/texmf-dist/fonts/type1/public/kpfonts/jkpmnc.pfb></usr/local/texlive/20
-22/texmf-dist/fonts/type1/public/kpfonts/jkpmne.pfb>
-Output written on supp_material.pdf (1 page, 29763 bytes).
+ 70i,15n,76p,1875b,521s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/t
+exlive/2022/texmf-dist/fonts/enc/dvips/kpfonts/kpfonts-expert.enc}</usr/local/t
+exlive/2022/texmf-dist/fonts/type1/public/kpfonts/jkpbn8a.pfb></usr/local/texli
+ve/2022/texmf-dist/fonts/type1/public/kpfonts/jkpex.pfb></usr/local/texlive/202
+2/texmf-dist/fonts/type1/public/kpfonts/jkpmi.pfb></usr/local/texlive/2022/texm
+f-dist/fonts/type1/public/kpfonts/jkpmia.pfb></usr/local/texlive/2022/texmf-dis
+t/fonts/type1/public/kpfonts/jkpmit8a.pfb></usr/local/texlive/2022/texmf-dist/f
+onts/type1/public/kpfonts/jkpmn8a.pfb></usr/local/texlive/2022/texmf-dist/fonts
+/type1/public/kpfonts/jkpmnc.pfb></usr/local/texlive/2022/texmf-dist/fonts/type
+1/public/kpfonts/jkpmne.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/pub
+lic/kpfonts/jkpmsc8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public
+/kpfonts/jkpssmn8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/k
+pfonts/jkpsy.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/kpfonts
+/jkpsyb.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/kpfonts/jkpt
+tmn8a.pfb>
+Output written on supp_material.pdf (11 pages, 358435 bytes).
 PDF statistics:
- 36 PDF objects out of 1000 (max. 8388607)
- 26 compressed objects within 1 object stream
- 2 named destinations out of 1000 (max. 500000)
- 69645 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 298 PDF objects out of 1000 (max. 8388607)
+ 230 compressed objects within 3 object streams
+ 46 named destinations out of 1000 (max. 500000)
+ 152174 words of extra memory for PDF output out of 154059 (max. 10000000)
 

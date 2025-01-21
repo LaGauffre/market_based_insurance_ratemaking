@@ -99,7 +99,8 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
 
     selected_indices <- sample(indices, size = popSize - nrow(cloud), replace = T, prob = w[indices])
     if(length(random_parms) == 1){
-      new_cloud <- old_cloud[selected_indices, , drop = FALSE] + rnorm(n = popSize - nrow(cloud),
+      new_cloud <- old_cloud[selected_indices, , drop = FALSE]
+      new_cloud[, random_parms] <- old_cloud[selected_indices, random_parms, drop = FALSE] + rnorm(n = popSize - nrow(cloud),
                                                                                   mean = 0,
                                                                                   sd = 2 * w.cov)
 

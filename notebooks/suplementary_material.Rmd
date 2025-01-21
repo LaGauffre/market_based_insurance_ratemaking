@@ -9,6 +9,9 @@ knitr::opts_chunk$set(echo = TRUE)
 library(latex2exp)
 library(IsoPriceR)
 library(ggplot2)
+library(latex2exp)
+library(kableExtra)
+library(xtable)
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 getwd()
 ```
@@ -94,6 +97,8 @@ pps <- compute_pure_premia(X_true, coverage_type = "xs", th_premium)
 sds <- sd_pure_premia(X_true, coverage_type = "xs", th_premium)
 df_pp <- data.frame(r = r, d = d, l = l, pp=pps)
 df_pp
+latex_code <- xtable(df_pp)
+print(latex_code, include.rownames = FALSE)
 ```
 The pure premium computed above corresponds to a well specified case where there exists $\theta^* = \theta_0$ for which 
 
@@ -101,6 +106,7 @@ $$
 d\left[p_{1:n},p_{1:n}^{\theta^{\ast}}\right] = 0
 $$
 Note that we assign the same weight to each if the pre premium. We can check the uniqueness empirically, first in one dimension as we plot the functions $\sigma\mapsto d\left[p_{1:n},p_{1:n}^{\theta^{\ast}}\right]\Big\rvert_{\mu =0, \lambda = 3}$, $\mu\mapsto d\left[p_{1:n},p_{1:n}^{\theta^{\ast}}\right]\Big\rvert_{\sigma =1, \lambda = 3}$, and $\lambda\mapsto d\left[p_{1:n},p_{1:n}^{\theta^{\ast}}\right]\Big\rvert_{\mu =0, \sigma = 1}$  
+
 
 ```{r}
 data <- df_pp[,c("r", "d", "l")]
@@ -173,7 +179,7 @@ prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
 model_prior <- independent_priors(prior_distributions)
 
 # Settings for the abc algorithm
-popSize <- 500;  MC_R<- 500; acc <- 10; sp_bounds <- c(1, 1); eps_min <- 0.02
+popSize <- 500;  MC_R<- 500; acc <- 0.01; sp_bounds <- c(1, 1); eps_min <- 0.02
 
 sum(sds/sqrt(MC_R)^2)
 
@@ -241,16 +247,19 @@ Furthermore isotonic regression is non parametric which mitigate the risk of mis
 In our example we take the following loading fuunctions 
 
 $$
-f_1(x) = 1.1\cdot x\text{, }f_2(x) = 1.2\cdot x \text{, and } f_3(x) = 1.3\cdot x
+f_1(x) = 1.38\cdot x\text{, }f_2(x) = 1.1\cdot x \text{, and } f_3(x) = 1.4\cdot x
 $$
 
 ```{r}
 data <- df_pp[,c("r", "d", "l")]
 data["x"] <- c(df_pp$pp[1]*1.38 , df_pp$pp[2]*1.1 , df_pp$pp[3] * 1.4 )
+data$x;df_pp$pp
 # data["x"] <- df_pp$pp
 ths_premium <- as.matrix(data[p_p$parm_names])
 lambda_true <- 3; mu_true <- 0; sigma_true <- 1
-(pp_cp_well_specified <- ggplot() + geom_point(mapping = aes(x = df_pp$pp, y = data$x)) +  ggplot2::theme_classic(base_size = 14) + labs(x = "Pure Premium", title = "Commercial premium", y = "") )
+res_iso <- isoreg(df_pp$pp, data$x)
+
+(pp_cp_well_specified <- ggplot() + geom_point(mapping = aes(x = df_pp$pp, y = data$x)) + geom_step(mapping = aes(x= df_pp$pp, y = data$x)) + ggplot2::theme_classic(base_size = 14) + labs(x = "Pure Premium", title = "Commercial premium", y = "") )
 ggsave("../figures/pp_cp_well_specified.pdf", pp_cp_well_specified)
 ```
 
@@ -277,12 +286,37 @@ ds_lm <- sapply(1:nrow(cloud), function(k) mean((pp_fake[, k] / ress_lm[k] - dat
 df_ds <- data.frame(cloud)
 df_ds <- cbind(df_ds, ds_iso)
 df_ds <- cbind(df_ds, ds_lm)
-ggplot(data = df_ds) + geom_line(mapping = aes(x = sigma, y = ds_iso))
-ggplot(data = df_ds) + geom_line(mapping = aes(x = sigma, y = ds_lm))
+(rmse_sigma_iso <- ggplot(data = df_ds) + geom_line(mapping = aes(x = sigma, y = ds_iso)) + ggplot2::theme_classic(base_size = 14) + labs(x = expression(sigma), title = "RMSE", y = "") )
+ggsave("../figures/rmse_sigma_iso.pdf", rmse_sigma_iso)
 
-sigmas[ds_lm == min(ds_lm)]
+(rmse_sigma_linear <- ggplot(data = df_ds) + geom_line(mapping = aes(x = sigma, y = ds_lm)) + ggplot2::theme_classic(base_size = 14) + labs(x = expression(sigma), title = "RMSE", y = ""))
+ggsave("../figures/rmse_sigma_linear.pdf", rmse_sigma_linear)
+
 ```
+```{r}
+# Prior settings for the parameters
+prior_lambda <- prior_dist("constant", "lambda",c(3))
+prior_mu <- prior_dist("constant", "mu",c(0))
+prior_sigma <- prior_dist("uniform", "sigma", c(0, 2))
+prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
+model_prior <- independent_priors(prior_distributions)
 
+# Settings for the abc algorithm
+popSize <- 2000;  MC_R<- 500; acc <- 0.01; sp_bounds <- c(10^(-16), Inf); eps_min <- 10^-8
+res_abc <- abc(data, model_prior, l_m, p_p, popSize, MC_R, acc, sp_bounds, eps_min)
+```
+```{r}
+cloud_dfs <- lapply(res_abc$Clouds, as.data.frame)
+cloud_df <- do.call(rbind, cloud_dfs)
+cloud_df$generation <- sort(rep(1:length(res_abc$Clouds), popSize))
+cloud_df_plot <- data.frame(parm = cloud_df$sigma, parm_name = "sigma", generation = cloud_df$generation)
+
+cloud_df_plot$parm_name <-as.factor(cloud_df_plot$parm_name) 
+levels(cloud_df_plot$parm_name) <- c(sigma = TeX("$\\sigma$"))
+(posterior_sig_iso <- ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=sigma, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\sigma$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,1]), color="black",
+                                   linetype="dashed"))
+ggsave("../figures/posterior_sig_iso_supp_mat.pdf", posterior_sig_iso)
+```
 
 ```{r}
 # Prior settings for the parameters
@@ -293,29 +327,36 @@ prior_distributions <- list(prior_lambda, prior_mu, prior_sigma)
 model_prior <- independent_priors(prior_distributions)
 
 # Settings for the abc algorithm
-popSize <- 500;  MC_R<- 500; acc <- 0.01; sp_bounds <- c(10^(-16), Inf); eps_min <- 0.01
+popSize <- 500;  MC_R<- 500; acc <- 0.01; sp_bounds <- c(10^(-16), Inf); eps_min <- 10^(-8)
 res_abc <- abc(data, model_prior, l_m, p_p, popSize, MC_R, acc, sp_bounds, eps_min)
+save(res_abc, file = "../data/res_abc_wo_reg_supp_material_Section2.RData")
 ```
 
 ```{r}
+load("../data/res_abc_wo_reg_supp_material_Section2.RData")
 # We retrieve the cloud of particles associated to each generation
 cloud_dfs <- lapply(res_abc$Clouds, as.data.frame)
 cloud_df <- do.call(rbind, cloud_dfs)
 cloud_df$generation <- sort(rep(1:length(res_abc$Clouds), popSize))
 cloud_df_plot <- rbind(
   data.frame(parm = cloud_df$lambda, parm_name = "lambda", generation = cloud_df$generation),
+    data.frame(parm = cloud_df$sigma, parm_name = "mu", generation = cloud_df$generation),
   data.frame(parm = cloud_df$sigma, parm_name = "sigma", generation = cloud_df$generation)
 )
 cloud_df_plot$parm_name <-as.factor(cloud_df_plot$parm_name) 
-levels(cloud_df_plot$parm_name) <- c(lambda = TeX("$\\lambda$"), sigma = TeX("$\\sigma$"))
-ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=lambda, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\lambda$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,1]), color="black",
-                                   linetype="dashed")
+levels(cloud_df_plot$parm_name) <- c(lambda = TeX("$\\lambda$"), mu = TeX("$\\mu$"),  sigma = TeX("$\\sigma$"))
 
-ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=mu, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\mu$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,2]), color="black",
-                                   linetype="dashed")
+(posterior_lambda <- ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=lambda, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\lambda$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,1]), color="black",
+                                   linetype="dashed"))
+ggsave("../figures/posterior_lambda_wo_reg_supp_mat.pdf", posterior_lambda)
 
-ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=sigma, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\sigma$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,3]), color="black",
-                                   linetype="dashed")
+(posterior_mu <- ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=mu, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\mu$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,2]), color="black",
+                                   linetype="dashed"))
+ggsave("../figures/posterior_mu_wo_reg_supp_mat.pdf", posterior_mu)
+
+(posterior_sig <- ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mapping = aes(x=sigma, color = as.factor(generation))) + ggplot2::labs(x=TeX("$\\sigma$"), y = "Density", color = "Generation") + ggplot2::theme_classic(base_size = 20) + ggplot2::theme(legend.position="right") + ggplot2::geom_vline(ggplot2::aes(xintercept=true_parms[,3]), color="black",
+                                   linetype="dashed"))
+ggsave("../figures/posterior_sig_wo_reg_supp_mat.pdf", posterior_sig)
 ```
 # III - Optimization based on the commercial premiums with regularization
 
@@ -335,6 +376,7 @@ ggplot(data = df_ds) + geom_line(mapping = aes(x = sigma, y = ds_lm_reg))
 print(sigmas[ds_lm_reg==min(ds_lm_reg)])
 print(sigmas[ds_iso_reg==min(ds_iso_reg)])
 ```
+
 ```{r}
 # Prior settings for the parameters
 prior_lambda <- prior_dist("uniform", "lambda",c(0, 5))
@@ -372,7 +414,7 @@ ggplot2::ggplot(data = cloud_df ) + ggplot2::geom_density(data = cloud_df, mappi
 res_abc$ds[[13]]
 ```
 
-## Well-specified case
+## Miss-specified case
 
 In our example we take the following loading fuunctions 
 
