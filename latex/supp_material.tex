@@ -394,7 +394,7 @@ where \((x)_+ = \max(x,0)\) denotes the positive part of \(x\). The distance we 
 d\left[\Tilde{p}_{1:n}, f(p_{1:n}^\theta)\right] = \text{RMSE}\left[\Tilde{p}_{1:n}, f(p_{1:n}^\theta)\right] + \text{Reg}_{\text{low}}\left(\Tilde{p}_{1:n}, p_{1:n}^\theta\right) + \text{Reg}_{\text{high}}\left(\Tilde{p}_{1:n}, p_{1:n}^\theta\right).
 \]
 We take again our three insurance coverages $g_1, g_2$ and $g_3$ and we distinguish two safety loading situations. The well-specified case in \cref{ssec:well_specfifed_safety_loading} and the miss-specified on in \cref{ssec:miss_specfifed_safety_loading}
-\subsection{Well-specfifed safety loading}\label{ssec:well_specfifed_safety_loading}
+\subsection{Well-specified safety loading}\label{ssec:well_specfifed_safety_loading}
 Consider the following loading functions
 $$
 f_1(x) = 1.38\cdot x\text{, }f_2(x) = 1.1\cdot x \text{, and } f_3(x) = 1.4\cdot x. 
@@ -404,7 +404,7 @@ The isotonic model is well specified in this case because the pure and commercia
 \begin{figure}[!ht]
   \begin{center}
   \includegraphics[width=0.7\linewidth]{../figures/pp_cp_well_specified}
-    \caption{Intermediate posterior distributions for $\lambda$ and $\sigma$.}
+    \caption{Isotonic fit of the pure and commercial premium when the isotonic model is well-specified.}
     \label{fig:pp_cp_well_specified}
   \end{center}
 \end{figure}
@@ -469,10 +469,118 @@ The posterior distribution are provided on \cref{sub:sig_pure_RMSE}.
   \end{center}
 \end{figure}
 
-Too many combination of parameters yield the right ordering. Only regularization can help us in discriminating the irrelvant portions of the parameter space.
-
+Too many combinations of parameters yield the right ordering. Only regularization can help us in discriminating the irrelevant portions of the parameter space. We therefore set a loss ratio corridor with 
+$$
+\text{LR}_{\text{low}} = 0.7\text{, and }\text{LR}_{\text{high}} = 0.9. 
+$$
+The posterior distributions are providied on \cref{fig:posterior_commercial_premium_w_reg}. 
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat[Posterior distribution of $\lambda$]{
+      \includegraphics[width=0.4\textwidth]{../figures/posterior_lambda_w_reg_supp_mat}
+      \label{sub:posterior_lambda_w_reg_supp_mat}
+    }
+    \subfloat[Posterior distribution of $\mu$]{
+      \includegraphics[width=0.4\textwidth]{../figures/posterior_mu_w_reg_supp_mat}
+      \label{sub:posterior_mu_w_reg_supp_mat}
+    }\\
+    \subfloat[Posterior distribution of $\sigma$]{
+      \includegraphics[width=0.4\textwidth]{../figures/posterior_sig_w_reg_supp_mat}
+      \label{sub:posterior_sig_w_reg_supp_mat}
+    }
+    \caption{Posterior distributions of the parameters of the $\text{Pois}(\lambda)-\text{LogNormal}(\mu , \sigma)$ risk model.}
+    \label{fig:posterior_commercial_premium_w_reg}
+  \end{center}
+\end{figure}
+The posterior do not center arround the true value but at least the true value are possible values. The posterior distributions are informative despise the fact that we have only used three commercial rates. 
 \subsection{Misspecified safety loading} \label{ssec:miss_specfifed_safety_loading}
+Consider the following loading functions
+$$
+f_1(x) = 1.1\cdot x\text{, }f_2(x) = 1.2\cdot x \text{, and } f_3(x) = 1.3\cdot x
+$$
+The isotonic model is well specified in this case because the pure and commercial premium are ordered in the same way. In that case the isotonic regression exactly interpolates the datapoints as shown on \cref{fig:pp_cp_miss_specified}.
 
+\begin{figure}[!ht]
+  \begin{center}
+  \includegraphics[width=0.7\linewidth]{../figures/pp_cp_miss_specified}
+    \caption{Isotonic fit of the pure and commercial premium when the isotonic model is miss-specified.}
+    \label{fig:pp_cp_miss_specified}
+  \end{center}
+\end{figure}
+
+\cref{sub:sig_pure_RMSE} shows the plot of the $\sigma\mapsto d\left(p_{1:n},p_{1:n}^{\theta}\right)\Big\rvert_{\lambda =3, \mu =0}$ when $f$ is isotonic (\cref{sub:rmse_sigma_iso}) and when $f$ is linear (\cref{sub:rmse_sigma_linear}).
+
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat[$f$ is isotonic]{
+      \includegraphics[width=0.4\textwidth]{../figures/rmse_sigma_iso_miss}
+      \label{sub:rmse_sigma_iso_miss}
+    }
+    \subfloat[$f$ is linear]{
+      \includegraphics[width=0.4\textwidth]{../figures/rmse_sigma_linear_miss}
+      \label{sub:rmse_sigma_linear_miss}
+    }
+    \caption{$\sigma\mapsto d\left(p_{1:n},p_{1:n}^{\theta}\right)\Big\rvert_{\mu =0, \sigma = 1}$.}
+    \label{fig:rmse_sigma_iso_linear_miss}
+  \end{center}
+\end{figure}
+
+The isotonic condition does not hold for the true parameter and the RMSE of the isotonic model is minimal for the wrong values. The linear fit is also wrong just like on \cref{fig:pp_cp_well_specified}. 
+
+We run our ABC algorithm with the following settings 
+$$
+J = 500\text{, }R= 500\text{, and }\epsilon_{\min} =0.01.
+$$
+The prior distributions on the model parameters are as follows: 
+$$
+\lambda \sim \UnifDist([0, 10]),\text{ }\mu\sim \UnifDist([-3, 3])\text{ and }\sigma\sim \UnifDist([0, 2]).
+$$
+The posterior distribution are provided on \cref{sub:sig_pure_RMSE}. Note that we do not include the regularization terms at this stage.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat[Posterior distribution of $\lambda$]{
+      \includegraphics[width=0.4\textwidth]{../figures/posterior_lambda_wo_reg_miss_supp_mat}
+      \label{sub:posterior_lambda_wo_reg_miss_supp_mat}
+    }
+    \subfloat[Posterior distribution of $\mu$]{
+      \includegraphics[width=0.4\textwidth]{../figures/posterior_mu_wo_reg_miss_supp_mat}
+      \label{sub:posterior_mu_wo_reg_miss_supp_mat}
+    }\\
+    \subfloat[Posterior distribution of $\sigma$]{
+      \includegraphics[width=0.4\textwidth]{../figures/posterior_sig_wo_reg_miss_supp_mat}
+      \label{sub:posterior_sig_wo_reg_miss_supp_mat}
+    }
+    \caption{Posterior distributions of the parameters of the $\text{Pois}(\lambda)-\text{LogNormal}(\mu , \sigma)$ risk model.}
+    \label{fig:posterior_commercial_premium_wo_reg_miss}
+  \end{center}
+\end{figure}
+
+The posterior distribution do not bring any relevant information as in the well specified case depicted in \cref{fig:posterior_commercial_premium_wo_reg}.  We run again our ABC algorithm, this time setting a loss ratio corridor with 
+$$
+\text{LR}_{\text{low}} = 0.76\text{, and }\text{LR}_{\text{high}} = 0.9. 
+$$
+The posterior distributions are providied on \cref{fig:posterior_commercial_premium_w_reg_miss}. 
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat[Posterior distribution of $\lambda$]{
+      \includegraphics[width=0.4\textwidth]{../figures/posterior_lambda_w_reg_miss_supp_mat}
+      \label{sub:posterior_lambda_w_reg_miss_supp_mat}
+    }
+    \subfloat[Posterior distribution of $\mu$]{
+      \includegraphics[width=0.4\textwidth]{../figures/posterior_mu_w_reg_miss_supp_mat}
+      \label{sub:posterior_mu_w_reg_miss_supp_mat}
+    }\\
+    \subfloat[Posterior distribution of $\sigma$]{
+      \includegraphics[width=0.4\textwidth]{../figures/posterior_sig_w_reg_miss_supp_mat}
+      \label{sub:posterior_sig_w_reg_miss_supp_mat}
+    }
+    \caption{Posterior distributions of the parameters of the $\text{Pois}(\lambda)-\text{LogNormal}(\mu , \sigma)$ risk model.}
+    \label{fig:posterior_commercial_premium_w_reg_miss}
+  \end{center}
+\end{figure}
+
+The posterior are a bit more informative now. Three rates seem to be too few to expect good results. The simulation study and the real data analysis in the paper consider cases with more that $25$ rates. 
 \bibliographystyle{plainnat}
 \bibliography{abc_no_data}
 

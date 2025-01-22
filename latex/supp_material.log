@@ -1,6 +1,6 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.27)  21 JAN 2025 18:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.27)  22 JAN 2025 10:28
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
  %&-line parsing enabled.
 **supp_material.tex
 (./supp_material.tex
@@ -1925,14 +1925,6 @@ Package pdftex.def Info: ../figures/pp_cp_well_specified.pdf  used on input lin
 e 406.
 (pdftex.def)             Requested size: 335.99854pt x 207.36772pt.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 407.
-LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 407.
-LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 407.
-LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 407.
-LaTeX Font Info:    No math alphabet change to frozen version normal on input l
 ine 412.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
 ine 412.
@@ -2028,60 +2020,294 @@ ne 450.
 File: ../figures/posterior_lambda_wo_reg_supp_mat.pdf Graphic file (type pdf)
 <use ../figures/posterior_lambda_wo_reg_supp_mat.pdf>
 Package pdftex.def Info: ../figures/posterior_lambda_wo_reg_supp_mat.pdf  used 
-on input line 457.
+on input line 458.
 (pdftex.def)             Requested size: 191.99707pt x 192.00089pt.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 457.
+ine 458.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 457.
+ine 458.
 <../figures/posterior_mu_wo_reg_supp_mat.pdf, id=194, 505.89pt x 505.89pt>
 File: ../figures/posterior_mu_wo_reg_supp_mat.pdf Graphic file (type pdf)
 <use ../figures/posterior_mu_wo_reg_supp_mat.pdf>
 Package pdftex.def Info: ../figures/posterior_mu_wo_reg_supp_mat.pdf  used on i
-nput line 461.
+nput line 462.
 (pdftex.def)             Requested size: 191.99707pt x 192.00089pt.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 461.
+ine 462.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 461.
+ine 462.
 <../figures/posterior_sig_wo_reg_supp_mat.pdf, id=195, 505.89pt x 505.89pt>
 File: ../figures/posterior_sig_wo_reg_supp_mat.pdf Graphic file (type pdf)
 <use ../figures/posterior_sig_wo_reg_supp_mat.pdf>
 Package pdftex.def Info: ../figures/posterior_sig_wo_reg_supp_mat.pdf  used on 
-input line 465.
+input line 466.
 (pdftex.def)             Requested size: 191.99707pt x 192.00089pt.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 465.
-LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 465.
-LaTeX Font Info:    No math alphabet change to frozen version normal on input l
 ine 466.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
 ine 466.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 466.
+ine 467.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 466.
+ine 467.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 466.
+ine 467.
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
-ine 466.
+ine 467.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 467.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 467.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 474.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 474.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 474.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 474.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 474.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 475.
+<../figures/posterior_lambda_w_reg_supp_mat.pdf, id=197, 526.96875pt x 325.215p
+t>
+File: ../figures/posterior_lambda_w_reg_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_lambda_w_reg_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_lambda_w_reg_supp_mat.pdf  used o
+n input line 482.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 482.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 482.
+<../figures/posterior_mu_w_reg_supp_mat.pdf, id=198, 526.96875pt x 325.215pt>
+File: ../figures/posterior_mu_w_reg_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_mu_w_reg_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_mu_w_reg_supp_mat.pdf  used on in
+put line 486.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 486.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 486.
+<../figures/posterior_sig_w_reg_supp_mat.pdf, id=199, 526.96875pt x 325.215pt>
+File: ../figures/posterior_sig_w_reg_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_sig_w_reg_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_sig_w_reg_supp_mat.pdf  used on i
+nput line 490.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 490.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 490.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 491.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 491.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 491.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 491.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 491.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 491.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 499.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 499.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 500.
+<../figures/pp_cp_miss_specified.pdf, id=201, 526.96875pt x 325.215pt>
+File: ../figures/pp_cp_miss_specified.pdf Graphic file (type pdf)
+<use ../figures/pp_cp_miss_specified.pdf>
+Package pdftex.def Info: ../figures/pp_cp_miss_specified.pdf  used on input lin
+e 505.
+(pdftex.def)             Requested size: 335.99854pt x 207.36772pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 511.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 511.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 511.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 511.
+<../figures/rmse_sigma_iso_miss.pdf, id=205, 526.96875pt x 325.215pt>
+File: ../figures/rmse_sigma_iso_miss.pdf Graphic file (type pdf)
+<use ../figures/rmse_sigma_iso_miss.pdf>
+Package pdftex.def Info: ../figures/rmse_sigma_iso_miss.pdf  used on input line
+ 518.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 518.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 518.
+<../figures/rmse_sigma_linear_miss.pdf, id=206, 526.96875pt x 325.215pt>
+File: ../figures/rmse_sigma_linear_miss.pdf Graphic file (type pdf)
+<use ../figures/rmse_sigma_linear_miss.pdf>
+Package pdftex.def Info: ../figures/rmse_sigma_linear_miss.pdf  used on input l
+ine 522.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 522.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 522.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 523.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 523.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 523.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 523.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 532.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 532.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 533.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 536.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 536.
+LaTeX Font Info:    Undo math alphabet allocation in version normal on input li
+ne 537.
+<../figures/posterior_lambda_wo_reg_miss_supp_mat.pdf, id=209, 526.96875pt x 32
+5.215pt>
+File: ../figures/posterior_lambda_wo_reg_miss_supp_mat.pdf Graphic file (type p
+df)
+<use ../figures/posterior_lambda_wo_reg_miss_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_lambda_wo_reg_miss_supp_mat.pdf  
+used on input line 545.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 545.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 545.
+<../figures/posterior_mu_wo_reg_miss_supp_mat.pdf, id=210, 526.96875pt x 325.21
+5pt>
+File: ../figures/posterior_mu_wo_reg_miss_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_mu_wo_reg_miss_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_mu_wo_reg_miss_supp_mat.pdf  used
+ on input line 549.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 549.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 549.
+<../figures/posterior_sig_wo_reg_miss_supp_mat.pdf, id=211, 526.96875pt x 325.2
+15pt>
+File: ../figures/posterior_sig_wo_reg_miss_supp_mat.pdf Graphic file (type pdf)
 
-(./supp_material.bbl
+<use ../figures/posterior_sig_wo_reg_miss_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_sig_wo_reg_miss_supp_mat.pdf  use
+d on input line 553.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 553.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 553.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 554.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 554.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 554.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 554.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 554.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 554.
+
+[10]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 561.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 561.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 561.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 561.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 561.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 562.
+<../figures/posterior_lambda_w_reg_miss_supp_mat.pdf, id=220, 526.96875pt x 325
+.215pt>
+File: ../figures/posterior_lambda_w_reg_miss_supp_mat.pdf Graphic file (type pd
+f)
+<use ../figures/posterior_lambda_w_reg_miss_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_lambda_w_reg_miss_supp_mat.pdf  u
+sed on input line 569.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 569.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 569.
+<../figures/posterior_mu_w_reg_miss_supp_mat.pdf, id=221, 526.96875pt x 325.215
+pt>
+File: ../figures/posterior_mu_w_reg_miss_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_mu_w_reg_miss_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_mu_w_reg_miss_supp_mat.pdf  used 
+on input line 573.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 573.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 573.
+<../figures/posterior_sig_w_reg_miss_supp_mat.pdf, id=222, 526.96875pt x 325.21
+5pt>
+File: ../figures/posterior_sig_w_reg_miss_supp_mat.pdf Graphic file (type pdf)
+<use ../figures/posterior_sig_w_reg_miss_supp_mat.pdf>
+Package pdftex.def Info: ../figures/posterior_sig_w_reg_miss_supp_mat.pdf  used
+ on input line 577.
+(pdftex.def)             Requested size: 191.99707pt x 118.49158pt.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 577.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 577.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 578.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 578.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 578.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 578.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 578.
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 578.
+ [11 <../figures/posterior_lambda_wo_reg_supp_mat.pdf> <../figures/posterior_mu
+_wo_reg_supp_mat.pdf> <../figures/posterior_sig_wo_reg_supp_mat.pdf>]
+
+LaTeX Warning: Text page 12 contains only floats.
+
+[12 <../figures/posterior_lambda_w_reg_supp_mat.pdf> <../figures/posterior_mu_w
+_reg_supp_mat.pdf> <../figures/posterior_sig_w_reg_supp_mat.pdf> <../figures/pp
+_cp_miss_specified.pdf>]
+LaTeX Font Info:    No math alphabet change to frozen version normal on input l
+ine 583.
+ (./supp_material.bbl
 LaTeX Font Info:    No math alphabet change to frozen version normal on input l
 ine 13.
-) [10] [11 <../figures/posterior_lambda_wo_reg_supp_mat.pdf> <../figures/poster
-ior_mu_wo_reg_supp_mat.pdf> <../figures/posterior_sig_wo_reg_supp_mat.pdf>] (./
-supp_material.aux)
+ [13 <../figures/rmse_sigma_iso_miss.pdf> <../figures/rmse_sigma_linear_miss.pd
+f> <../figures/posterior_lambda_wo_reg_miss_supp_mat.pdf> <../figures/posterior
+_mu_wo_reg_miss_supp_mat.pdf> <../figures/posterior_sig_wo_reg_miss_supp_mat.pd
+f>]) [14 <../figures/posterior_lambda_w_reg_miss_supp_mat.pdf> <../figures/post
+erior_mu_w_reg_miss_supp_mat.pdf> <../figures/posterior_sig_w_reg_miss_supp_mat
+.pdf>] (./supp_material.aux)
 Package rerunfilecheck Info: File `supp_material.out' has not changed.
-(rerunfilecheck)             Checksum: 481B847661A087875DC022A27D2181F8;724.
+(rerunfilecheck)             Checksum: 806213223815E01B41B47868F99DA8C2;724.
  ) 
 Here is how much of TeX's memory you used:
- 28212 strings out of 478268
- 503245 string characters out of 5846347
- 778995 words of memory out of 5000000
- 45386 multiletter control sequences out of 15000+600000
- 669095 words of font info for 468 fonts, out of 8000000 for 9000
+ 28386 strings out of 478268
+ 510594 string characters out of 5846347
+ 781115 words of memory out of 5000000
+ 45525 multiletter control sequences out of 15000+600000
+ 669519 words of font info for 471 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  70i,15n,76p,1875b,521s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/t
@@ -2099,10 +2325,10 @@ lic/kpfonts/jkpmsc8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public
 pfonts/jkpsy.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/kpfonts
 /jkpsyb.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/kpfonts/jkpt
 tmn8a.pfb>
-Output written on supp_material.pdf (11 pages, 358435 bytes).
+Output written on supp_material.pdf (14 pages, 616073 bytes).
 PDF statistics:
- 298 PDF objects out of 1000 (max. 8388607)
- 230 compressed objects within 3 object streams
- 46 named destinations out of 1000 (max. 500000)
- 152174 words of extra memory for PDF output out of 154059 (max. 10000000)
+ 423 PDF objects out of 1000 (max. 8388607)
+ 327 compressed objects within 4 object streams
+ 65 named destinations out of 1000 (max. 500000)
+ 152234 words of extra memory for PDF output out of 154059 (max. 10000000)
 

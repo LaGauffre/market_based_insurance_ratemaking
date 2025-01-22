@@ -1,20 +1,23 @@
 # Fdb version 3
-["bibtex supp_material"] 1737482097 "supp_material.aux" "supp_material.bbl" "supp_material" 1737482099
+["bibtex supp_material"] 1737534011 "supp_material.aux" "supp_material.bbl" "supp_material" 1737534175
   "/usr/local/texlive/2022/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
   "abc_no_data.bib" 1729837832 72880 560f5f70cf35c8eee58881f3beb01367 ""
-  "supp_material.aux" 1737482099 11561 83e5263b88c2a13a8ba64291ffcdea56 "pdflatex"
+  "supp_material.aux" 1737534175 13376 359a60ea655d540245b57e38b701ddf9 "pdflatex"
   (generated)
   "supp_material.bbl"
   "supp_material.blg"
-["pdflatex"] 1737482097 "supp_material.tex" "supp_material.pdf" "supp_material" 1737482099
+["pdflatex"] 1737534174 "supp_material.tex" "supp_material.pdf" "supp_material" 1737534175
   "../figures/lambda_pure_RMSE.pdf" 1737480000 4902 aebcc4be3e8c5a348cbfd3a0d85cc3c5 ""
   "../figures/mu_pure_RMSE.pdf" 1737480002 4914 2493a67d0c0beac2734ce1c4030648ae ""
   "../figures/posterior_lambda_supp_mat.pdf" 1737357290 54550 c283de566ba4018927d0963dc16cdcde ""
+  "../figures/posterior_lambda_w_reg_supp_mat.pdf" 1737534025 36728 c733eb2f50b08ca6b0832919572f8c83 ""
   "../figures/posterior_lambda_wo_reg_supp_mat.pdf" 1737481718 18883 b07bed617c9a715ca3a4a2199447e696 ""
   "../figures/posterior_mu_supp_mat.pdf" 1737357290 48660 42c81a893f671d5972e96f53a2225a33 ""
+  "../figures/posterior_mu_w_reg_supp_mat.pdf" 1737534025 28129 f7baa2f68844f2a837c245a65c3b7d09 ""
   "../figures/posterior_mu_wo_reg_supp_mat.pdf" 1737481733 18197 4abd55f233d5e6fd1f4d52cf1ba0c5a8 ""
   "../figures/posterior_sig_iso_supp_mat.pdf" 1737480492 10197 a93a0519029abe3a9ed4a564a557681c ""
   "../figures/posterior_sig_supp_mat.pdf" 1737357290 34516 28ea3b1e335ccf81512ad78f61c53871 ""
+  "../figures/posterior_sig_w_reg_supp_mat.pdf" 1737534025 33743 73d2e77c6d93f25cd37410c47f98faf2 ""
   "../figures/posterior_sig_wo_reg_supp_mat.pdf" 1737481734 18726 6bff8da8055506fdcbf1c38a45348989 ""
   "../figures/pp_cp_well_specified.pdf" 1737480010 4618 3f121dcf55625bedca8ec83321fe5e54 ""
   "../figures/rmse_sigma_iso.pdf" 1737480015 4899 5c8d445ff23d20fa4a8889766d70312b ""
@@ -247,10 +250,10 @@
   "/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1647878959 4410336 7d30a02e9fa9a16d7d1f8d037ba69641 ""
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1664288841 2826439 dee74aad735af7933a71799c9e035791 ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
-  "supp_material.aux" 1737482099 11561 83e5263b88c2a13a8ba64291ffcdea56 "pdflatex"
-  "supp_material.bbl" 1737482097 542 dba12e44159c5aca56d0969caf0cad1d "bibtex supp_material"
-  "supp_material.out" 1737482099 724 481b847661a087875dc022a27d2181f8 "pdflatex"
-  "supp_material.tex" 1737482096 28189 17c822d6ecc215432d38a820d214c8d7 ""
+  "supp_material.aux" 1737534175 13376 359a60ea655d540245b57e38b701ddf9 "pdflatex"
+  "supp_material.bbl" 1737534011 542 dba12e44159c5aca56d0969caf0cad1d "bibtex supp_material"
+  "supp_material.out" 1737534175 724 481b847661a087875dc022a27d2181f8 "pdflatex"
+  "supp_material.tex" 1737534174 29593 2ec9a9807ae11e3d9242d6befa5c71c8 ""
   (generated)
   "supp_material.aux"
   "supp_material.log"

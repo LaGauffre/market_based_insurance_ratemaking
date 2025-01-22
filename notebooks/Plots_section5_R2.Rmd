@@ -233,9 +233,13 @@ print(xtable(tab), include.rownames=FALSE)
 
 ```{r}
 iso_df <- data.frame()
-k <- 1
+
 names(res_abc_list) <- model_names
-model_names_s <- c("Pois(lambda)-Lognormal(mu,sigma=1)", "Pois(lambda)-Gamma(alpha,beta=1)", "Pois(lambda)-Lognormal(mu=0,sigma)")
+latex_labels <- c(
+  expression(Pois(lambda) ~ "- Lognormal(" * mu * ", " * sigma == 1 * ")"),
+  expression(Pois(lambda) ~ "- Gamma(" * alpha * ", " * beta == 1 * ")"),
+  expression(Pois(lambda) ~ "- Lognormal(" * mu == 0 * ", " * sigma * ")")
+)
 
 for(k in 1:length(res_abc_list)){
   if(names(res_abc_list[k]) %in% model_names_s){
@@ -250,7 +254,12 @@ for(k in 1:length(res_abc_list)){
   
 }
 
-(iso_plot <- ggplot(data = iso_df) + geom_step(mapping = aes(x= x, y = y, color = model)) +  ggplot2::theme_classic(base_size = 14) + labs(x= "Pure premium", y = "Commercial premium", title = "", color = "Models") + theme(legend.position="right")) 
+
+(iso_plot <- ggplot(data = iso_df) + geom_step(mapping = aes(x= x, y = y, color = model)) +  ggplot2::theme_classic(base_size = 14) + labs(x= "Pure premium", title = "Commercial premium", y = "", color = "Models") +
+  scale_color_manual(
+    values = c("blue", "red", "green"), # Couleurs arbitraires
+    labels = latex_labels
+  ) +  theme(legend.position="bottom",legend.title.position = "top",legend.direction = "horizontal", legend.location = "plot")) 
 
 ggsave("../figures/iso_real_data_all_models.pdf", iso_plot)
 ```
@@ -268,7 +277,7 @@ data["pp"] <- pp_pois_lnorm_sigma1
 res_iso <- isoreg(pp_pois_lnorm_sigma1, data$x)
 iso_df <-data.frame(model = rep(loss_models[[k]]$model_name, nrow(data)), x= sort(res_iso$x), y = res_iso$yf)
 
-(ggplot() + geom_point(data = data, mapping = aes(x = pp, y = x, color = as.factor(insurance_carrier))) + geom_step(data = iso_df, mapping = aes(x = x, y = y)) + labs(x= "Pure Premium", y = "Commercial premium", title = "", color = "Insurance Carrier") + ggplot2::theme_classic(base_size = 20) 
+(ggplot() + geom_point(data = data, mapping = aes(x = pp, y = x, color = as.factor(insurance_carrier))) + geom_step(data = iso_df, mapping = aes(x = x, y = y)) + labs(x= "Pure Premium", title = "Commercial premium", y = "", color = "Insurance Carrier") + ggplot2::theme_classic(base_size = 20) 
   + theme(legend.position = "none")
   ) 
 ggsave("../figures/iso_pois_lnorm_sigma1.pdf")
