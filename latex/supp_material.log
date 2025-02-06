@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.27)  5 FEB 2025 18:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.27)  6 FEB 2025 10:12
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2274,7 +2274,7 @@ Package rerunfilecheck Info: File `supp_material.out' has not changed.
 Here is how much of TeX's memory you used:
  28382 strings out of 478268
  510560 string characters out of 5846347
- 782129 words of memory out of 5000000
+ 783129 words of memory out of 5000000
  45525 multiletter control sequences out of 15000+600000
  669111 words of font info for 469 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -2294,7 +2294,7 @@ lic/kpfonts/jkpmsc8a.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public
 pfonts/jkpsy.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/kpfonts
 /jkpsyb.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/kpfonts/jkpt
 tmn8a.pfb>
-Output written on supp_material.pdf (14 pages, 613703 bytes).
+Output written on supp_material.pdf (14 pages, 613674 bytes).
 PDF statistics:
  425 PDF objects out of 1000 (max. 8388607)
  329 compressed objects within 4 object streams
