@@ -200,21 +200,20 @@
 \maketitle
 \vspace{3mm}
 The goal of this supplementary material is to discuss the identifiability issue associated to finding the parameters of the risk model. Let $X$ be a random variable that represents the total health expenses over a given time period, say one year, associated to a pet. Our goal is to find the parameter $\theta$ that best explains our market data made of insurance quotes
-$$
+\begin{equation}\label{eq:commercial_premiums}
 \tilde{p}_i = f_i\left[\mathbb{E}(g_i(X))\right],\text{ }i = 1,\ldots, n,
-$$
+\end{equation}
 where $g_i$ are the coverage functions and $f_i$ are the loading function. The coverage functions are known and of the form
 $$
 g(x) = \min(\max(r\cdot x - d, 0), l),
 $$
-where $r$ is the rate of coverage, $d$ is the deductible and $l$ is the limit.The loading functions are unknown and will be approximated by a generic function $f$. 
+where $r$ is the rate of coverage, $d$ is the deductible and $l$ is the limit. The loading functions $f_i$ are unknown and will be approximated by a generic function $f$. 
 
-In \cref{sec:problem1}, we consider the problem of finding $\theta$ if we know access to the pure premiums 
-
+In \cref{sec:problem1}, we consider the problem of finding $\theta$ if we know the pure premiums 
 $$
 p_i = \left[\mathbb{E}(g_i(X))\right],\text{ }i = 1,\ldots, n,
 $$
-which is not a realistic situation in practice. We look into the actual problem in \cref{sec:problem2}. An isotonic regression model is used to approximate $f$. This choice  is compared to a linear fit $f(x) =b\cdot x$. We consider the model
+which is not a realistic situation in practice. We look into the actual problem, relying on the commercial premiums \eqref{eq:commercial_premiums}, in \cref{sec:problem2}. An isotonic regression model is used to approximate $f$. This choice  is compared to a linear fit $f(x) =b\cdot x$. We consider the model
 $$
 X = \sum_{k=1}^NU_k,
 $$
@@ -243,15 +242,15 @@ r & d & l &\phantom{abc}& Pure premium \\
 \section{Optimization problem 1}\label{sec:problem1}
 The first optimization that we consider reads as follows:
 \begin{pb}\label{pb:optimization_problem_simple}
-Let 
+Find $\theta\in \Theta\subset\mathbb{R}^d$ to minimize \(d\left[p_{1:n}, p_{1:n}^\theta\right]\), where 
 $$
 p_i^\theta =\mathbb{E}_\theta\left[g_{i}(X)\right],\text{ for }i = 1,\ldots, n,
 $$
-the pure premium associated to a risk $X$ parametrized by $\theta\in \Theta\subset\mathbb{R}^d$. We wish to find $\theta\in \Theta\subset\mathbb{R}^d$ to minimize \(d\left[p_{1:n}, p_{i:n}^\theta\right]\), where $d(\cdot, \cdot)$ denotes a distance function over the observation space.
+are the pure premium associated to $X$ parametrized by $\theta\in \Theta\subset\mathbb{R}^d$ and $d(\cdot, \cdot)$ denotes a distance function over the observation space. 
 \end{pb}
-We measure the discrepancy between observed and model-generated pure premiums using the root mean square error (RMSE) defined as
+Wew measure the discrepancy between observed and model-generated pure premiums using the root mean square error (RMSE) defined as
 \begin{equation}\label{eq:sse_distance_pure}
-\text{RMSE}\left[p_{1:n}, p^\theta_{i:n}\right] = \sqrt{\sum_{i=1}^nw^{\text{RMSE}}_i [p_i - p_i^\theta]^2}.
+\text{RMSE}\left[p_{1:n}, p^\theta_{1:n}\right] = \sqrt{\sum_{i=1}^nw^{\text{RMSE}}_i [p_i - p_i^\theta]^2}.
 \end{equation}
 The statistical framework is that of minimum distance estimation. We do not have access to the full shape of the data distribution. We must base our inference on specific moments, just as in the generalized method of moments, a popular method among econometricians (see \citet{Hansen1982}). The model is identifiable if there exists a unique $\theta^\ast$ such that 
 \begin{equation}\label{eq:optimization_knowing_pure_premium}
@@ -287,14 +286,15 @@ $$
   \end{center}
 \end{figure}
 
-By taking the parameters separately, it looks like the model is identifiable. It does not mean that we can identify a unique parametrization if we do not fix two parameters out of three. We cannot use a grid search procedure to explore the three dimensional parameter space and so we use the optimization procedure described in Section 3.3 of our paper. The parameters of the algorithm are set as follows: 
+By examining the parameters individually, the model appears to be identifiable. However, this does not imply that a unique parametrization can be determined unless two out of the three parameters are fixed. A grid search procedure is not feasible for exploring the three-dimensional parameter space. Instead, we employ the optimization procedure described in Section 3.3 of our paper. The parameters of the algorithm are configured as follows:  
 $$
-J = 500,\text{ }R= 500\text{, and } \epsilon_{\min} = 0.02.
+J = 500, \quad R = 500, \quad \text{and} \quad \epsilon_{\min} = 0.02.
 $$
-Recall that $J$ is the population size of the clouds of particles, $R$ is the number of Monte Carlo replications and $\epsilon_{\min}$ is a threshold for the tolerance level. The algorithm will stop if the tolerance threshold reaches $\epsilon_{\min}$. The prior distribution of the parameters are given by 
+Here, $J$ represents the population size of the clouds of particles, $R$ is the number of Monte Carlo replications, and $\epsilon_{\min}$ is the threshold for the tolerance level. The algorithm terminates once the tolerance threshold reaches $\epsilon_{\min}$. The choice of the threshold $\epsilon_{\min} = 0.02$ is based on an estimation of the error in the RMSE resulting from using a Monte Carlo approximation to compute the pure premium. The prior distributions of the parameters are defined as:  
 $$
-\lambda \sim \UnifDist([0, 10]),\text{ }\mu\sim \UnifDist([-3, 3])\text{ and }\sigma\sim \UnifDist([0, 2]).
+\lambda \sim \UnifDist([0, 10]), \quad \mu \sim \UnifDist([-3, 3]), \quad \text{and} \quad \sigma \sim \UnifDist([0, 2]).
 $$
+\cref{fig:posterior_pure_premium} displays the resulting posterior distributions.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -315,7 +315,8 @@ $$
   \end{center}
 \end{figure}
 
-The choice of the level of $\epsilon_{\min} = 0.02$ follows from an estimation of the error on the RMSE resulkting from the use of a Monte Carlo approximation to calculate the pure premium. If we were able to compute exactly the pure premium then our algorithm should return some dirac distributions pointing to the true parameter value. The fact that we must use a Monte Carlo approximation justifies the use of an Approximate Bayesian Computation procedure as we encapsulate in the posterior distribution the uncertainty associated to the Monte Carlo error. Here we conclue that with these three pure premium allows us to identify the true parameters of the model. The situation is more difficult when we only have access to thecommercial premium as in the forthcoming section.
+If the pure premium could be calculated exactly, our algorithm would yield Dirac distributions concentrated at the true parameter values. However, since we rely on a Monte Carlo approximation, the use of an Approximate Bayesian Computation (ABC) procedure is justified, as it incorporates the uncertainty introduced by the Monte Carlo error into the posterior distribution. in view of \cref{fig:posterior_pure_premium}, we conclude that having access to the pure premium enables the identification of the true parameters of the model. The situation becomes more challenging when only the commercial premium is available, as will be discussed in the next section.
+
 \section{Optimization problem 2}\label{sec:problem2}
 
 As mentionned earlier, we do not have access to the pure premiums. Instead we have a collection of commercial rates $\Tilde{p}_{1:n} = \{\Tilde{p}_{1},\ldots, \Tilde{p}_{n}\}$ defined as
@@ -324,27 +325,13 @@ $$
 $$
 It leads us to formulate the following optimization problem: 
 \begin{pb}\label{pb:optimization_problem}
-Denote by 
-$$
-p_i^\theta =\mathbb{E}_\theta\left[g_{i}(X)\right],\text{ for }i = 1,\ldots, n,
-$$
-the pure premium associated to a risk $X$ parametrized by $\theta\in \Theta\subset\mathbb{R}^d$. Further denote by $p^\theta_{1:n}$ and $\Tilde{p}_{1:n}$ the collections of pure and commercial premiums. \\
-
-We wish to find $\theta\in \Theta\subset\mathbb{R}^d$ and $f:\mathbb{R}_+\mapsto \mathbb{R}_+$ to minimize \(d\left[\Tilde{p}_{1:n}, f(p_{i:n}^\theta)\right]\),
-
-where the function $f$ is applied elementwise  on $p_{i:n}^\theta$ and $d(\cdot, \cdot)$ denotes a distance function over the observation space,
-subject to 
-\begin{equation}\label{eq:constraint1}
-\Tilde{p}_i \geq p_i^\theta
-\end{equation}
-and 
-\begin{equation}\label{eq:constraint2}
-f(p_i^\theta) \geq p_i^\theta, 
-\end{equation}
-for $i = 1,\ldots, n$. 
+Find $\theta\in \Theta\subset\mathbb{R}^d$ and $f:\mathbb{R}_+\mapsto \mathbb{R}_+$ to minimize \(d\left[\Tilde{p}_{1:n}, f(p_{1:n}^\theta)\right]\), where the function $f$ is applied elementwise on $p_{1:n}^\theta$ and $d(\cdot, \cdot)$ denotes a distance function over the observation space, subject to 
+\begin{equation}\label{eq:constraint}
+\Tilde{p}_i \geq p_i^\theta,\text{ and } f(p_i^\theta) \geq p_i^\theta, \text{for }i = 1,\ldots, n.
+\end{equation} 
 \end{pb}
 
-Our first task is to find a generic function $f$ to represent the safety loading functions $f_i$'s used by the competitors. For this, we use isotonic regression. It is a statistical technique used for fitting a non-decreasing function to a set of data points. The idea is that if two pure premium satisfy $p_i\leq p_j$ then the commercial premium should also verify $\Tilde{p}_i\leq \Tilde{p}_j$. Consider a collection of candidate pure premiums $p_{i:n}^\theta$, associated to a candidate risk parameter $\theta$. Our datapoints are therefore pairs of pure and commercial premiums $(p_i^\theta,\Tilde{p}_i)_{i=1,\ldots, n}$. Suppose the pure premium have been ordered such that $p_i^\theta\leq p_j^\theta$ for $i\leq j$, isotonic regression seeks a least square fit $\Tilde{p}^\theta_i$ for the $\Tilde{p}_i$'s such that $\Tilde{p}^\theta_i\leq \Tilde{p}^\theta_j$ for $p_i^\theta\leq p_j^\theta$. It reduces to find $\Tilde{p}^\theta_1,\ldots, \Tilde{p}^\theta_n$ that minimize
+Our first task is to find a generic function $f$ to represent the safety loading functions $f_i$'s used by the competitors. For this, we use isotonic regression. It is a statistical technique used for fitting a non-decreasing function to a set of data points. The idea is that if two pure premium satisfy $p_i\leq p_j$ then the commercial premium should also verify $\Tilde{p}_i\leq \Tilde{p}_j$. Consider a collection of candidate pure premiums $p_{1:n}^\theta$, associated to a candidate risk parameter $\theta$. Our datapoints are therefore pairs of pure and commercial premiums $(p_i^\theta,\Tilde{p}_i)_{i=1,\ldots, n}$. Suppose the pure premium have been ordered such that $p_i^\theta\leq p_j^\theta$ for $i\leq j$, isotonic regression seeks a least square fit $\Tilde{p}^\theta_i$ for the $\Tilde{p}_i$'s such that $\Tilde{p}^\theta_i\leq \Tilde{p}^\theta_j$ for $p_i^\theta\leq p_j^\theta$. It reduces to find $\Tilde{p}^\theta_1,\ldots, \Tilde{p}^\theta_n$ that minimize
 $$
 \sum_{i=1}^nw_i^{\textsc{iso}}(\Tilde{p}^\theta_i- \Tilde{p}_i)^2\text{, subject to }\Tilde{p}_i^\theta\leq \Tilde{p}^\theta_j\text{ whenever }p_i^\theta\leq p_j^\theta,
 $$
@@ -363,17 +350,19 @@ $$
 ensuring monotonicity.
 \item Repeat Step 2 until no violations are left. 
 \end{enumerate}
-We use the \texttt{isoreg} function from $R$ to get the fitted values $\Tilde{p}^\theta_i,\text{ }i=1,\ldots, n$. To complete the isotonic regression task we shall find a function $f$ such that $f(p_i^\theta)=\Tilde{p}^\theta_i$. A common choice is a piece-wise constant function that interpolates the $\Tilde{p}^\theta_i$'s. We now turn to the definition of a distance. Our starting point to measure the discrepancy between observed and model-generated commercial rates is the root mean square error (RMSE) defined as
+We use the \texttt{isoreg} function from $R$ to get the fitted values $\Tilde{p}^\theta_i,\text{ }i=1,\ldots, n$. To complete the isotonic regression task we shall find a function $f$ such that $f(p_i^\theta)=\Tilde{p}^\theta_i$. A common choice is a piece-wise constant function that interpolates the $\Tilde{p}^\theta_i$'s.\\
+
+We now turn to the definition of a distance. Our starting point to measure the discrepancy between observed and model-generated commercial rates is the root mean square error (RMSE) defined as
 \begin{equation}\label{eq:sse_distance}
-\text{RMSE}\left[\Tilde{p}_{1:n}, f(p^\theta_{i:n})\right] = \sqrt{\sum_{i=1}^nw^{\text{RMSE}}_i [\Tilde{p}_i - f(p_i^\theta)]^2},
+\text{RMSE}\left[\Tilde{p}_{1:n}, f(p^\theta_{1:n})\right] = \sqrt{\sum_{i=1}^nw^{\text{RMSE}}_i [\Tilde{p}_i - f(p_i^\theta)]^2},
 \end{equation}
 for a candidate risk parameter $\theta$ and an isotonic fit $f$. We seek 
 $$
 \theta^\ast = \underset{\theta\in \Theta}{\argmin}\,
-\text{RMSE}\left[\Tilde{p}_{1:n}, f(p^\theta_{i:n})\right].
+\text{RMSE}\left[\Tilde{p}_{1:n}, f(p^\theta_{1:n})\right].
 $$
 
-The existence of such $\theta^\ast$ is guaranteed because $\theta\mapsto \text{RMSE}\left[\Tilde{p}_{1:n}, f(p^\theta_{i:n})\right]$ only takes a finite number of values. Indeed, to each $\theta \in \Theta$ is associated a unique permutation $s^\theta\in S_n$, where $S_n$ denotes the set of all the permutations of $\{1,\ldots, n\}$, such that 
+The existence of such $\theta^\ast$ is guaranteed because $\theta\mapsto \text{RMSE}\left[\Tilde{p}_{1:n}, f(p^\theta_{1:n})\right]$ only takes a finite number of values. Indeed, to each $\theta \in \Theta$ is associated a unique permutation $s^\theta\in S_n$, where $S_n$ denotes the set of all the permutations of $\{1,\ldots, n\}$, such that 
 $$
 p^\theta_{s^\theta(1)}\leq\ldots\leq p^\theta_{s^\theta(n)}.
 $$
@@ -381,7 +370,7 @@ This permutation $s^\theta$ defines a unique isotonic fit $f$ based on
 $$
 \Tilde{p}^\theta_{s^\theta(1)}\leq\ldots\leq \Tilde{p}^\theta_{s^\theta(n)},
 $$
-leading to a given RMSE value $\text{RMSE}\left[\Tilde{p}_{1:n}, f(p^\theta_{i:n})\right]$. Concretely, for $\theta_1,\theta_2\in \Theta$, if it holds that $s^{\theta_1} = s^{\theta_2}$ then $\text{RMSE}\left[\Tilde{p}_{1:n}, f(p^{\theta_1}_{i:n})\right] = \text{RMSE}\left[\Tilde{p}_{1:n}, f(p^{\theta_2}_{i:n})\right]$. The application $\theta\mapsto s_n^\theta$ is surjective since $S_n^\Theta = \{s_n^\theta\text{ ; }\theta\in \Theta\}\}$  is finite.  The fact that $\Theta$ is a continuous space implies that $\theta^\ast$ cannot be unique. Our problem is an ill-posed inverse problem. Ill-posedness is usually dealt with by adding a regularization to the objective function that one wants to minimize. The ratio of \(p / \Tilde{p}\) corresponds to what practitioners would call the expected Loss Ratio (\(\text{LR}\)). Our solution is based on targeting a given loss ratio.  The loss ratio is a standard measure to assess the profitability of insurance lines of business. An insurance company that enters a new market is likely to have insights on the loss ratio relative to this market, for example by having informal discussions with reinsurers, brokers or competitors. These insights may translate into the definition of a lower and upper bound denoted by \(\text{LR}_{\text{low}}\) and \(\text{LR}_{\text{high}}\), respectively. We can then assume that the loss ratios \(\text{LR}_i = p_i / \Tilde{p}_i\), for \(i = 1, \ldots, n\), should fall in the range \([\text{LR}_{\text{low}}, \text{LR}_{\text{high}}]\), which we refer to as the loss ratio corridor. Assuming that \(\text{LR}_{\text{high}} < 1\), we may ensure both constraint \eqref{eq:constraint1} and \(\text{LR}_i \in [\text{LR}_{\text{low}}, \text{LR}_{\text{high}}]\) by adding to our distance \eqref{eq:sse_distance} two regularization terms defined as
+leading to a given RMSE value $\text{RMSE}\left[\Tilde{p}_{1:n}, f(p^\theta_{1:n})\right]$. Concretely, for $\theta_1,\theta_2\in \Theta$, if it holds that $s^{\theta_1} = s^{\theta_2}$ then $\text{RMSE}\left[\Tilde{p}_{1:n}, f(p^{\theta_1}_{i:n})\right] = \text{RMSE}\left[\Tilde{p}_{1:n}, f(p^{\theta_2}_{i:n})\right]$. The application $\theta\mapsto s_n^\theta$ is surjective since $S_n^\Theta = \{s_n^\theta\text{ ; }\theta\in \Theta\}$  is finite.  The fact that $\Theta$ is a continuous space implies that $\theta^\ast$ cannot be unique. Our problem is an ill-posed inverse problem. Ill-posedness is usually dealt with by adding a regularization to the objective function that one wants to minimize. The ratio of \(p / \Tilde{p}\) corresponds to what practitioners would call the expected Loss Ratio (\(\text{LR}\)). Our solution is based on targeting a given loss ratio.  The loss ratio is a standard measure to assess the profitability of insurance lines of business. An insurance company that enters a new market is likely to have insights on the loss ratio relative to this market, for example by having informal discussions with reinsurers, brokers or competitors. These insights may translate into the definition of a lower and upper bound denoted by \(\text{LR}_{\text{low}}\) and \(\text{LR}_{\text{high}}\), respectively. We can then assume that the loss ratios \(\text{LR}_i = p_i / \Tilde{p}_i\), for \(i = 1, \ldots, n\), should fall in the range \([\text{LR}_{\text{low}}, \text{LR}_{\text{high}}]\), which we refer to as the loss ratio corridor. Assuming that \(\text{LR}_{\text{high}} < 1\), we may ensure both constraints in \eqref{eq:constraint} by adding to our distance \eqref{eq:sse_distance} two regularization terms defined as
 \begin{equation*}\label{eq:LR_bounds1}
 \text{Reg}_{\text{low}}\left(\Tilde{p}_{1:n}, p_{1:n}^\theta\right) = \sqrt{\sum_{i=1}^nw_i^{\text{RMSE}}\left(\Tilde{p}_i - p_i^\theta \cdot \text{LR}_{\text{low}}^{-1}\right)_+^2}, 
 \end{equation*}
@@ -393,7 +382,7 @@ where \((x)_+ = \max(x,0)\) denotes the positive part of \(x\). The distance we 
 \[
 d\left[\Tilde{p}_{1:n}, f(p_{1:n}^\theta)\right] = \text{RMSE}\left[\Tilde{p}_{1:n}, f(p_{1:n}^\theta)\right] + \text{Reg}_{\text{low}}\left(\Tilde{p}_{1:n}, p_{1:n}^\theta\right) + \text{Reg}_{\text{high}}\left(\Tilde{p}_{1:n}, p_{1:n}^\theta\right).
 \]
-We take again our three insurance coverages $g_1, g_2$ and $g_3$ and we distinguish two safety loading situations. The well-specified case in \cref{ssec:well_specfifed_safety_loading} and the miss-specified on in \cref{ssec:miss_specfifed_safety_loading}
+We take again our three insurance coverages $g_1, g_2$ and $g_3$ and we distinguish two safety loading situations. The well-specified case in \cref{ssec:well_specfifed_safety_loading} and the misspecified  in \cref{ssec:miss_specfifed_safety_loading}
 \subsection{Well-specified safety loading}\label{ssec:well_specfifed_safety_loading}
 Consider the following loading functions
 $$
@@ -409,7 +398,7 @@ The isotonic model is well specified in this case because the pure and commercia
   \end{center}
 \end{figure}
 
-\cref{sub:sig_pure_RMSE} shows the plot of the $\sigma\mapsto d\left(p_{1:n},p_{1:n}^{\theta}\right)\Big\rvert_{\lambda =3, \mu =0}$ when $f$ is isotonic (\cref{sub:rmse_sigma_iso}) and when $f$ is linear (\cref{sub:rmse_sigma_linear}).
+\cref{fig:rmse_sigma_iso_linear} shows the plot of the $\sigma\mapsto  \text{RMSE}\left[\Tilde{p}_{1:n}, f(p_{1:n}^\theta)\right]\Big\rvert_{\lambda =3, \mu =0}$ when $f$ is isotonic (\cref{sub:rmse_sigma_iso}) and when $f$ is linear (\cref{sub:rmse_sigma_linear}).
 
 \begin{figure}[!ht]
   \begin{center}
@@ -421,16 +410,20 @@ The isotonic model is well specified in this case because the pure and commercia
       \includegraphics[width=0.4\textwidth]{../figures/rmse_sigma_linear}
       \label{sub:rmse_sigma_linear}
     }
-    \caption{$\sigma\mapsto d\left(p_{1:n},p_{1:n}^{\theta}\right)\Big\rvert_{\mu =0, \sigma = 1}$.}
+    \caption{$\sigma\mapsto  \text{RMSE}\left[\Tilde{p}_{1:n}, f(p_{1:n}^\theta)\right]\Big\rvert_{\lambda =3, \mu =0}$.}
     \label{fig:rmse_sigma_iso_linear}
   \end{center}
 \end{figure}
 
-Note that in this example we do not cancrel the regularization terms. When $f$ is isotonic, the values of $\sigma$ for which the RMSE is null are associated to the same ordering of the pure premium than that of the true parameter $\sigma=1$, see \cref{sub:rmse_sigma_iso}. Several values of $\sigma$ are therefore optimal including the true one. On the other hand, when $f$ is linear, the RMSE is minimal for the parameter value that manage to align the commercial premium. It looks like one value of $\sigma$ however it is far from the true value, see \cref{sub:rmse_sigma_linear}. When looking at \cref{sub:rmse_sigma_iso}, one might expect that by running our ABC algorithm we shall get a uniform distribution as posterior distribution. We set the parameters of the algorithm as 
+Note that in this example, we do not include the regularization terms. When \(f\) is isotonic, the values of \(\sigma\) for which the RMSE is zero correspond to the same ordering of the pure premium as that of the true parameter \(\sigma = 1\) (see \cref{sub:rmse_sigma_iso}). Consequently, several values of \(\sigma\) are optimal, including the true one. 
+
+In contrast, when \(f\) is linear, the RMSE is minimized for the parameter value that best aligns the commercial premium. Although one value of \(\sigma\) seems to stand out, it is notably different from the true value (see \cref{sub:rmse_sigma_linear}). From \cref{sub:rmse_sigma_iso}, one might expect that running our ABC algorithm would produce a uniform posterior distribution. 
+
+The parameters of the algorithm are set as follows:  
 $$
-J = 2000\text{, }R= 500\text{, and }\epsilon_{\min} =10^-8.
+J = 2000, \quad R = 500, \quad \text{and} \quad \epsilon_{\min} = 10^{-8}.
 $$
-We set a prior distribution on $\sigma$ as $\sigma\sim\UnifDist([0, 2])$. The tolerance level is very low as we are after the values of sigma that yields the right ordering associated to a nearly null RMSE. The posterior distribution is provided on \cref{fig:posterior_sig_iso_supp_mat}.
+We define a prior distribution on \(\sigma\) as \(\sigma \sim \UnifDist([0, 2])\). The tolerance level is set very low because we are specifically interested in the values of \(\sigma\) that produce the correct ordering and an RMSE close to zero. The resulting posterior distribution is shown in \cref{fig:posterior_sig_iso_supp_mat}.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -440,15 +433,17 @@ We set a prior distribution on $\sigma$ as $\sigma\sim\UnifDist([0, 2])$. The to
   \end{center}
 \end{figure}
 
-It turns out that the posterior distribution is not all that uniform, this is explained by the Monte Carlo approximation we use which might change the pure premium ordering when getting close to the edge of the range of admissible $\sigma$ values. The posterior distribution displayed on \cref{fig:posterior_sig_iso_supp_mat} could look good enough to the naive eye and one could argue that regularization is not required here. When looking for $\lambda$, $\mu$ and $\sigma$ at the same time the parameters can offset each other and the right ordering of the pure premium does not allow us to extract relevant information. We run our ABC algorithm with the following settings 
+The posterior distribution is not entirely uniform, which can be attributed to the Monte Carlo approximation used. This approximation may alter the ordering of the pure premium when approaching the edges of the admissible range of \(\sigma\) values. The posterior distribution shown in \cref{fig:posterior_sig_iso_supp_mat} might appear satisfactory to a naive observer, leading one to argue that regularization is unnecessary in this case. 
+
+However, when estimating \(\lambda\), \(\mu\), and \(\sigma\) simultaneously, the parameters can offset each other, and the correct ordering of the pure premium alone does not provide sufficient information to identify the parameters accurately. To address this, we run our ABC algorithm with the following settings:  
 $$
-J = 500\text{, }R= 500\text{, and }\epsilon_{\min} =10^-8.
+J = 500, \quad R = 500, \quad \text{and} \quad \epsilon_{\min} = 10^{-8}.
 $$
-The prior distributions on the model parameters are as follows: 
+The prior distributions for the model parameters are defined as:  
 $$
-\lambda \sim \UnifDist([0, 10]),\text{ }\mu\sim \UnifDist([-3, 3])\text{ and }\sigma\sim \UnifDist([0, 2]).
+\lambda \sim \UnifDist([0, 10]), \quad \mu \sim \UnifDist([-3, 3]), \quad \text{and} \quad \sigma \sim \UnifDist([0, 2]).
 $$
-The posterior distribution are provided on \cref{sub:sig_pure_RMSE}.
+The resulting posterior distributions are provided in \cref{fig:posterior_commercial_premium_wo_reg}.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -469,11 +464,12 @@ The posterior distribution are provided on \cref{sub:sig_pure_RMSE}.
   \end{center}
 \end{figure}
 
-Too many combinations of parameters yield the right ordering. Only regularization can help us in discriminating the irrelevant portions of the parameter space. We therefore set a loss ratio corridor with 
+Too many parameter combinations result in the correct ordering, making it difficult to identify the relevant portions of the parameter space. Regularization is essential to address this issue, as it allows us to exclude irrelevant regions. To this end, we define a loss ratio corridor with:  
 $$
-\text{LR}_{\text{low}} = 0.7\text{, and }\text{LR}_{\text{high}} = 0.9. 
+\text{LR}_{\text{low}} = 0.7 \quad \text{and} \quad \text{LR}_{\text{high}} = 0.9.
 $$
-The posterior distributions are providied on \cref{fig:posterior_commercial_premium_w_reg}. 
+The posterior distributions are shown in \cref{fig:posterior_commercial_premium_w_reg}.
+
 \begin{figure}[!ht]
   \begin{center}
     \subfloat[Posterior distribution of $\lambda$]{
@@ -492,23 +488,24 @@ The posterior distributions are providied on \cref{fig:posterior_commercial_prem
     \label{fig:posterior_commercial_premium_w_reg}
   \end{center}
 \end{figure}
-The posterior do not center arround the true value but at least the true value are possible values. The posterior distributions are informative despise the fact that we have only used three commercial rates. 
+The posterior do not center arround the true value but at least the true values belongs to the set of possible values. The posterior distributions are informative despise the fact that we have only used three commercial rates. 
+
 \subsection{Misspecified safety loading} \label{ssec:miss_specfifed_safety_loading}
-Consider the following loading functions
+Consider the following loading functions:  
 $$
-f_1(x) = 1.1\cdot x\text{, }f_2(x) = 1.2\cdot x \text{, and } f_3(x) = 1.3\cdot x
+f_1(x) = 1.1 \cdot x, \quad f_2(x) = 1.2 \cdot x, \quad \text{and} \quad f_3(x) = 1.3 \cdot x.
 $$
-The isotonic model is well specified in this case because the pure and commercial premium are ordered in the same way. In that case the isotonic regression exactly interpolates the datapoints as shown on \cref{fig:pp_cp_miss_specified}.
+In this case, the isotonic model is misspecified because the pure premium and commercial premiums are not ordered consistently. As a result, the isotonic regression approximates the data points through interpolation, as illustrated in \cref{fig:pp_cp_miss_specified}.
 
 \begin{figure}[!ht]
   \begin{center}
   \includegraphics[width=0.7\linewidth]{../figures/pp_cp_miss_specified}
-    \caption{Isotonic fit of the pure and commercial premium when the isotonic model is miss-specified.}
+    \caption{Isotonic fit of the pure and commercial premium when the isotonic model is misspecified.}
     \label{fig:pp_cp_miss_specified}
   \end{center}
 \end{figure}
 
-\cref{sub:sig_pure_RMSE} shows the plot of the $\sigma\mapsto d\left(p_{1:n},p_{1:n}^{\theta}\right)\Big\rvert_{\lambda =3, \mu =0}$ when $f$ is isotonic (\cref{sub:rmse_sigma_iso}) and when $f$ is linear (\cref{sub:rmse_sigma_linear}).
+\cref{fig:rmse_sigma_iso_linear_miss} shows the plot of the $\sigma\mapsto  \text{RMSE}\left[\Tilde{p}_{1:n}, f(p_{1:n}^\theta)\right]\Big\rvert_{\lambda =3, \mu =0}$ when $f$ is isotonic (\cref{sub:rmse_sigma_iso_miss}) and when $f$ is linear (\cref{sub:rmse_sigma_linear_miss}).
 
 \begin{figure}[!ht]
   \begin{center}
@@ -520,22 +517,23 @@ The isotonic model is well specified in this case because the pure and commercia
       \includegraphics[width=0.4\textwidth]{../figures/rmse_sigma_linear_miss}
       \label{sub:rmse_sigma_linear_miss}
     }
-    \caption{$\sigma\mapsto d\left(p_{1:n},p_{1:n}^{\theta}\right)\Big\rvert_{\mu =0, \sigma = 1}$.}
+    \caption{$\sigma\mapsto  \text{RMSE}\left[\Tilde{p}_{1:n}, f(p_{1:n}^\theta)\right]\Big\rvert_{\lambda =3, \mu =0}$.}
     \label{fig:rmse_sigma_iso_linear_miss}
   \end{center}
 \end{figure}
 
-The isotonic condition does not hold for the true parameter and the RMSE of the isotonic model is minimal for the wrong values. The linear fit is also wrong just like on \cref{fig:pp_cp_well_specified}. 
+The isotonic condition does not hold for the true parameter, and the RMSE of the isotonic model is minimized for incorrect values. Similarly, the linear fit is also inaccurate, just like in \cref{fig:pp_cp_well_specified}. 
 
-We run our ABC algorithm with the following settings 
+We run our ABC algorithm with the following settings:  
 $$
-J = 500\text{, }R= 500\text{, and }\epsilon_{\min} =0.01.
+J = 500, \quad R = 500, \quad \text{and} \quad \epsilon_{\min} = 0.01.
 $$
-The prior distributions on the model parameters are as follows: 
+The prior distributions for the model parameters are defined as:  
 $$
-\lambda \sim \UnifDist([0, 10]),\text{ }\mu\sim \UnifDist([-3, 3])\text{ and }\sigma\sim \UnifDist([0, 2]).
+\lambda \sim \UnifDist([0, 10]), \quad \mu \sim \UnifDist([-3, 3]), \quad \text{and} \quad \sigma \sim \UnifDist([0, 2]).
 $$
-The posterior distribution are provided on \cref{sub:sig_pure_RMSE}. Note that we do not include the regularization terms at this stage.
+The resulting posterior distributions are provided in \cref{fig:posterior_commercial_premium_wo_reg_miss}. Note that regularization terms are not included at this stage.
+
 
 \begin{figure}[!ht]
   \begin{center}
@@ -556,11 +554,11 @@ The posterior distribution are provided on \cref{sub:sig_pure_RMSE}. Note that w
   \end{center}
 \end{figure}
 
-The posterior distribution do not bring any relevant information as in the well specified case depicted in \cref{fig:posterior_commercial_premium_wo_reg}.  We run again our ABC algorithm, this time setting a loss ratio corridor with 
+The posterior distribution is useless. We run again our ABC algorithm, this time setting a loss ratio corridor with 
 $$
 \text{LR}_{\text{low}} = 0.76\text{, and }\text{LR}_{\text{high}} = 0.9. 
 $$
-The posterior distributions are providied on \cref{fig:posterior_commercial_premium_w_reg_miss}. 
+The posterior distributions are provided on \cref{fig:posterior_commercial_premium_w_reg_miss}. 
 \begin{figure}[!ht]
   \begin{center}
     \subfloat[Posterior distribution of $\lambda$]{
@@ -580,7 +578,9 @@ The posterior distributions are providied on \cref{fig:posterior_commercial_prem
   \end{center}
 \end{figure}
 
-The posterior are a bit more informative now. Three rates seem to be too few to expect good results. The simulation study and the real data analysis in the paper consider cases with more that $25$ rates. 
+The posterior distributions are slightly more informative now. However, using only three rates appears insufficient to achieve reliable results. The simulation study and the real data analysis in our paper consider scenarios with more than 25 rates and only two parameters to estimate.
+
+
 \bibliographystyle{plainnat}
 \bibliography{abc_no_data}
 
