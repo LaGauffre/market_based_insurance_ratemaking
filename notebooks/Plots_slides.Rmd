@@ -212,66 +212,70 @@ combined_df <- do.call(rbind, res)
 ```{r}
 (boxplot_claim_frequency <- ggplot(combined_df, aes(x = model, y = Claim_Frequency)) +
   geom_boxplot() +
-  labs(title = "Claim frequency by Model",
+  labs(title = TeX("E(N)"),
        x = "Model",
        y = "") +
-  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Pois(",lambda,")-Lognormal(",mu,",",sigma=1,")")),
-                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Pois(",lambda,")-Gamma(",alpha,",",beta=1,")")),
-                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Pois(",lambda,")-Lognormal(",mu=0,",",sigma,")")))) +
-  theme_minimal())+
+ scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Lognormal(",mu,",",sigma=1,")")),
+                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Gamma(",alpha,",",beta=1,")")),
+                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Lognormal(",mu=0,",",sigma,")")))) +
+  theme_classic()
+ +
   theme(
-    axis.title = element_text(size = 20),  # Increase font size of axis titles
-    axis.text = element_text(size = 20),   # Increase font size of axis text
-    plot.title = element_text(size = 24)   # Increase font size of plot title
+    axis.title = element_text(size = 18),  # Increase font size of axis titles
+    axis.text = element_text(size = 18),   # Increase font size of axis text
+    plot.title = element_text(size = 20)   # Increase font size of plot title
   )
+ )
 ggsave("../figures/post_boxplot_claim_freq_one_risk_class.pdf", boxplot_claim_frequency)
 
 (boxplot_claim_amount <- ggplot(combined_df, aes(x = model, y = Claim_Amount)) +
   geom_boxplot() +
-  labs(title = "Claim amounts by Model",
+  labs(title = TeX("E(U)"),
        x = "Model",
        y = "") +
-  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Pois(",lambda,")-Lognormal(",mu,",",sigma=1,")")),
-                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Pois(",lambda,")-Gamma(",alpha,",",beta=1,")")),
-                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Pois(",lambda,")-Lognormal(",mu=0,",",sigma,")")))) +
-  theme_minimal())+
+  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Lognormal(",mu,",",sigma=1,")")),
+                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Gamma(",alpha,",",beta=1,")")),
+                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Lognormal(",mu=0,",",sigma,")")))) +
+  theme_classic()+
   theme(
-    axis.title = element_text(size = 20),  # Increase font size of axis titles
-    axis.text = element_text(size = 20),   # Increase font size of axis text
-    plot.title = element_text(size = 24)   # Increase font size of plot title
+    axis.title = element_text(size = 18),  # Increase font size of axis titles
+    axis.text = element_text(size = 18),   # Increase font size of axis text
+    plot.title = element_text(size = 20)   # Increase font size of plot title
+  )
   )
 ggsave("../figures/post_boxplot_claim_amount_one_risk_class.pdf", boxplot_claim_amount)
 
 
 (boxplot_LR <- ggplot(combined_df, aes(x = model, y = LR)) +
   geom_boxplot() +
-  labs(title = "Loss Ratio by Model",
+  labs(title = TeX("LR"),
        x = "Model",
        y = "") +
-  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Pois(",lambda,")-Lognormal(",mu,",",sigma=1,")")),
-                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Pois(",lambda,")-Gamma(",alpha,",",beta=1,")")),
-                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Pois(",lambda,")-Lognormal(",mu=0,",",sigma,")")))) +
-  theme_minimal())+
+  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Lognormal(",mu,",",sigma=1,")")),
+                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Gamma(",alpha,",",beta=1,")")),
+                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Lognormal(",mu=0,",",sigma,")")))) +
+  theme_classic()+
   theme(
-    axis.title = element_text(size = 20),  # Increase font size of axis titles
-    axis.text = element_text(size = 20),   # Increase font size of axis text
-    plot.title = element_text(size = 24)   # Increase font size of plot title
-  )
+    axis.title = element_text(size = 18),  # Increase font size of axis titles
+    axis.text = element_text(size = 18),   # Increase font size of axis text
+    plot.title = element_text(size = 20)   # Increase font size of plot title
+  ))
 ggsave("../figures/post_boxplot_LR_one_risk_class.pdf", boxplot_LR)
 
 (boxplot_total_claim_amount <- ggplot(combined_df, aes(x = model, y = Total_Claim_Amount)) +
   geom_boxplot() +
-  labs(title = "Total Claim Amount by Model",
+  labs(title =TeX("E(X)"),
        x = "Model",
        y = "") +
-  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Pois(",lambda,")-Lognormal(",mu,",",sigma=1,")")),
-                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Pois(",lambda,")-Gamma(",alpha,",",beta=1,")")),
-                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Pois(",lambda,")-Lognormal(",mu=0,",",sigma,")")))) +
-  theme_minimal()) +
+  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Lognormal(",mu,",",sigma=1,")")),
+                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Gamma(",alpha,",",beta=1,")")),
+                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Lognormal(",mu=0,",",sigma,")")))) +
+  theme_classic() +
   theme(
-    axis.title = element_text(size = 24),  # Increase font size of axis titles
-    axis.text = element_text(size = 24),   # Increase font size of axis text
-    plot.title = element_text(size = 24)   # Increase font size of plot title
+    axis.title = element_text(size = 18),  # Increase font size of axis titles
+    axis.text = element_text(size = 18),   # Increase font size of axis text
+    plot.title = element_text(size = 20)   # Increase font size of plot title
+    )
   )
 ggsave("../figures/post_boxplot_total_claim_amount_one_risk_class.pdf", boxplot_total_claim_amount)
 ```
