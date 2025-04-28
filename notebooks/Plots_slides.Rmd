@@ -130,13 +130,12 @@ loss_models <- list(
   loss_model(nbin_dist, gamma_dist, "Negative Binomial(b=1,p)-Gamma(alpha,beta=1)"),
   loss_model(pois_dist, lnorm_dist, "Pois(lambda)-Lognormal(mu=0,sigma)"),
   loss_model(bin_dist, lnorm_dist, "Binomial(a=12,p)-Lognormal(mu=0,sigma)"),
-  loss_model(nbin_dist, lnorm_dist, "Negative-Binomial(b=1,p)-Lognormal(mu=0,sigma)")
-  # loss_model(pois_dist, gamma_dist, "Pois(lambda)-Gamma(alpha=1,beta)"),
-  # loss_model(bin_dist, gamma_dist, "Binomial(a=12,p)-Gamma(alpha=1,beta)"),
-  # loss_model(nbin_dist, gamma_dist, "Negative-Binomial(b=1,p)-Gamma(alpha=1,beta)")
+  loss_model(nbin_dist, lnorm_dist, "Negative-Binomial(b=1,p)-Lognormal(mu=0,sigma)"),
+  loss_model(pois_dist, gamma_dist, "Pois(lambda)-Gamma(alpha=1,beta)"),
+  loss_model(bin_dist, gamma_dist, "Binomial(a=12,p)-Gamma(alpha=1,beta)"),
+  loss_model(nbin_dist, gamma_dist, "Negative-Binomial(b=1,p)-Gamma(alpha=1,beta)")
              )
 
-model_names <- sapply(1:length(loss_models), function(k) loss_models[[k]]$model_name)
 # Prior assumptions 
 
 prior_mu <- prior_dist("uniform", "mu",c(-10, 10))
@@ -203,6 +202,53 @@ for(k in 1:n_models){
 }
 ```
 
+```{r}
+ks <- c(1, 4, 7)
+res <- lapply(ks, function(k) compute_metric_cloud(data, p_p, loss_models[[k]], extract_last_cloud(res_abc_list[[k]]))$estimate)
+combined_df <- do.call(rbind, res)
+unique(combined_df$model)
+(boxplot_claim_frequency <- ggplot(combined_df, aes(x = model, y = Claim_Frequency)) +
+  geom_boxplot() +
+  labs(title = "Claim frequency by Model",
+       x = "Model",
+       y = "") +
+  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Pois(",lambda,")-Lognormal(",mu,",",sigma=1,")")),
+                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Pois(",lambda,")-Gamma(",alpha,",",beta=1,")")),
+                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Pois(",lambda,")-Lognormal(",mu=0,",",sigma,")")))) +
+  theme_minimal())
+
+(boxplot_claim_amount <- ggplot(combined_df, aes(x = model, y = Claim_Amount)) +
+  geom_boxplot() +
+  labs(title = "Claim amounts by Model",
+       x = "Model",
+       y = "") +
+  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Pois(",lambda,")-Lognormal(",mu,",",sigma=1,")")),
+                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Pois(",lambda,")-Gamma(",alpha,",",beta=1,")")),
+                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Pois(",lambda,")-Lognormal(",mu=0,",",sigma,")")))) +
+  theme_minimal())
+
+
+(boxplot_LR <- ggplot(combined_df, aes(x = model, y = LR)) +
+  geom_boxplot() +
+  labs(title = "Loss Ratio by Model",
+       x = "Model",
+       y = "") +
+  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Pois(",lambda,")-Lognormal(",mu,",",sigma=1,")")),
+                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Pois(",lambda,")-Gamma(",alpha,",",beta=1,")")),
+                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Pois(",lambda,")-Lognormal(",mu=0,",",sigma,")")))) +
+  theme_minimal())
+
+(boxplot_total_claim_amount <- ggplot(combined_df, aes(x = model, y = Total_Claim_Amount)) +
+  geom_boxplot() +
+  labs(title = "Total Claim Amount by Model",
+       x = "Model",
+       y = "") +
+  scale_x_discrete(labels = c("Pois(lambda)-Lognormal(mu,sigma=1)" = expression(paste("Pois(",lambda,")-Lognormal(",mu,",",sigma=1,")")),
+                              "Pois(lambda)-Gamma(alpha,beta=1)" = expression(paste("Pois(",lambda,")-Gamma(",alpha,",",beta=1,")")),
+                              "Pois(lambda)-Lognormal(mu=0,sigma)" = expression(paste("Pois(",lambda,")-Lognormal(",mu=0,",",sigma,")")))) +
+  theme_minimal())
+```
+
 ## Table 5
 ```{r}
 tab <- data.frame( model = sapply(1:n_models, function(k) loss_models[[k]]$model_name),
@@ -231,33 +277,19 @@ print(xtable(tab), include.rownames=FALSE)
 
 ```{r}
 iso_df <- data.frame()
-
-names(res_abc_list) <- model_names
-latex_labels <- c(
-  expression(Pois(lambda) ~ "- Lognormal(" * mu * ", " * sigma == 1 * ")"),
-  expression(Pois(lambda) ~ "- Gamma(" * alpha * ", " * beta == 1 * ")"),
-  expression(Pois(lambda) ~ "- Lognormal(" * mu == 0 * ", " * sigma * ")")
-)
+k <- 1
 
 for(k in 1:length(res_abc_list)){
-  if(names(res_abc_list[k]) %in% model_names_s){
-    map <- t(as.matrix(colMeans(extract_last_cloud(res_abc_list[[k]]))))
+  map <- t(as.matrix(colMeans(extract_last_cloud(res_abc_list[[k]]))))
   pp <- compute_metric_particle(data, p_p, loss_models[[k]], map, method = "map")$pp
   # mode <- t(as.matrix(extract_mode(res_abc_list[[k]], loss_models[[k]], prior_distributions[[k]])))
   # pp <- compute_metric_particle(data, p_p, loss_models[[k]], mode, method = "mode")$pp
   res_iso <- isoreg(pp, data$x)
   iso_df <- rbind(iso_df,
                 data.frame(model = rep(loss_models[[k]]$model_name, nrow(data)), x= sort(res_iso$x), y = res_iso$yf))
-  }
-  
 }
 
-
-(iso_plot <- ggplot(data = iso_df) + geom_step(mapping = aes(x= x, y = y, color = model)) +  ggplot2::theme_classic(base_size = 14) + labs(x= "Pure premium", title = "Commercial premium", y = "", color = "Models") +
-  scale_color_manual(
-    values = c("blue", "red", "green"), # Couleurs arbitraires
-    labels = latex_labels
-  ) +  theme(legend.position="bottom",legend.title.position = "top",legend.direction = "horizontal", legend.location = "plot")) 
+(iso_plot <- ggplot(data = iso_df) + geom_step(mapping = aes(x= x, y = y, color = model)) +  ggplot2::theme_classic(base_size = 14) + labs(x= "Pure premium", y = "Commercial premium", title = "", color = "Model") + theme(legend.position="none")) 
 
 ggsave("../figures/iso_real_data_all_models.pdf", iso_plot)
 ```
@@ -275,7 +307,7 @@ data["pp"] <- pp_pois_lnorm_sigma1
 res_iso <- isoreg(pp_pois_lnorm_sigma1, data$x)
 iso_df <-data.frame(model = rep(loss_models[[k]]$model_name, nrow(data)), x= sort(res_iso$x), y = res_iso$yf)
 
-(ggplot() + geom_point(data = data, mapping = aes(x = pp, y = x, color = as.factor(insurance_carrier))) + geom_step(data = iso_df, mapping = aes(x = x, y = y)) + labs(x= "Pure Premium", title = "Commercial premium", y = "", color = "Insurance Carrier") + ggplot2::theme_classic(base_size = 20) 
+(ggplot() + geom_point(data = data, mapping = aes(x = pp, y = x, color = as.factor(insurance_carrier))) + geom_step(data = iso_df, mapping = aes(x = x, y = y)) + labs(x= "Pure Premium", y = "Commercial premium", title = "", color = "Insurance Carrier") + ggplot2::theme_classic(base_size = 20) 
   + theme(legend.position = "none")
   ) 
 ggsave("../figures/iso_pois_lnorm_sigma1.pdf")
