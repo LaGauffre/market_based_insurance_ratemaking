@@ -31,12 +31,7 @@ sample_first <- function(data, model_prior, l_m, p_p, popSize, MC_R, sp_bounds){
 
   cloud <- sample_independent_priors(model_prior, R = popSize)
   w <- rep(1, nrow(cloud))
-  if(length(random_parms) == 1){
-    w.cov <- sd(cloud[, random_parms])
-
-  }else{
-    w.cov <- cov.wt(cloud, wt = w, cor = FALSE, center = TRUE)$cov
-  }
+  w.cov <- cov.wt(cloud, wt = w, cor = FALSE, center = TRUE)$cov
   X <- sample_X(l_m , cloud, R = MC_R)
   pp_fake <- compute_pure_premia(X, coverage_type = "xs", ths_premium)
   ds1 <- sapply(1:ncol(pp_fake), function(k) sqrt(mean((pmax(cps - pp_fake[,k] /sp_bounds[1], 0) )^2)))
@@ -98,19 +93,10 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
   while(nrow(cloud) < popSize){
 
     selected_indices <- sample(indices, size = popSize - nrow(cloud), replace = T, prob = w[indices])
-    if(length(random_parms) == 1){
-      new_cloud <- old_cloud[selected_indices, , drop = FALSE]
-      new_cloud[, random_parms] <- old_cloud[selected_indices, random_parms, drop = FALSE] + rnorm(n = popSize - nrow(cloud),
-                                                                                  mean = 0,
-                                                                                  sd = 2 * w.cov)
 
-
-    }else{
-      new_cloud <- old_cloud[selected_indices, , drop = FALSE] + mvtnorm::rmvnorm(n = popSize - nrow(cloud),
-                                                                                  mean = rep(0,length(model_prior$parms_name)),
-                                                                                  sigma = 2 * w.cov)
-    }
-
+    new_cloud <- old_cloud[selected_indices, , drop = FALSE] + mvtnorm::rmvnorm(n = popSize - nrow(cloud),
+                                                                  mean = rep(0,length(model_prior$parms_name)),
+                                                                  sigma = 2 * w.cov)
     # We blend the new particles with the old ones
     # new_cloud <- rbind(new_cloud[s, ], cloud[selected_indices, ][ !s,])
     # new_cloud <- new_cloud[(logd_independent_priors(model_prior, new_cloud) != - Inf) &
@@ -129,8 +115,8 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
                                                                           res_iso$yf), f = 1))
       ds_temp <- sapply(1:nrow(new_cloud), function(k) mean((fs[[k]](pp_fake[, k]) - data$x)^2)^(1/2)) + ds1 + ds2
 
-      cloud <- rbind(cloud, new_cloud[ds_temp <= eps , ])
-      ds <- c(ds, ds_temp[ds_temp <= eps ])
+      cloud <- rbind(cloud, new_cloud[ds_temp < sample_res$eps, ])
+      ds <- c(ds, ds_temp[ds_temp < sample_res$eps])
 
     }else{
       cloud <- cloud; ds <- ds
@@ -145,19 +131,10 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
   #                eval.points = cloud[, random_parms],
   #                w = w[indices])
   # inter_prob <- kde$estimate
-  if(length(random_parms) == 1){
-    inter_prob <- ks::kde(cloud[, random_parms],eval.points = cloud[, random_parms])$estimate
-
-
-    w.cov <- sd(cloud[, random_parms])
-
-  }else{
   inter_prob <- ks::dmvnorm.mixt(cloud[, random_parms],
                mus = old_cloud[indices, random_parms],
-               Sigmas=matrix(rep(2 * w.cov[random_parms,random_parms], length(indices)), ncol = length(random_parms), byrow = TRUE),
+               Sigmas=matrix(rep(2 * w.cov[random_parms,random_parms], length(indices)), ncol = 2, byrow = TRUE),
                props = w[indices] / sum(w[indices]))
-  w.cov <- cov.wt(cloud[, l_m$parm_names], wt = w, cor = FALSE, center = TRUE)$cov
-  }
 
 
 
@@ -174,22 +151,24 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
   #     browser()
   #   }
   # )
-  # w.cov <- cov.wt(cloud[, l_m$parm_names], wt = w, cor = FALSE, center = TRUE)$cov
+  w.cov <- cov.wt(cloud[, l_m$parm_names], wt = w, cor = FALSE, center = TRUE)$cov
   sort_index <- order(ds)
+
   ESSs <- sapply(1:length(w), function(k) 1 / sum((w[sort_index][1:k] / sum(w[sort_index][1:k]))^2) )
   if(sum(ESSs > popSize / 2) == 0){
     indices <- sort_index
   }else{
     indices <- sort_index[1:which(ESSs > popSize/2)[1]]
   }
-  eps <- max(max(ds[indices]) - 10^(-8), eps_min)
 
+
+  eps <- max(ds[indices])
 
   # kde <- suppressWarnings(
   #   ks::kde(x = cloud[indices, random_parms], H =  2 * w.cov[random_parms,random_parms],
   #           # eval.points = cloud[indices, random_parms] ,
   #           w = w[indices]))
-  return(list(cloud = cloud, ds = ds, indices = indices, eps = eps, ESS = sum(w[indices])^2/sum(w[indices]^2), w = w, w.cov = w.cov))
+  return(list(cloud = cloud, ds = ds, indices = indices, eps = max(ds[indices]), ESS = sum(w[indices])^2/sum(w[indices]^2), w = w, w.cov = w.cov))
 }
 
 
@@ -201,7 +180,7 @@ sample_g <- function(data, model_prior, l_m, p_p, popSize, sample_res, MC_R, sp_
 #' @param p_p objecte of type pure_premium
 #' @param popSize Size of the cloud of particles
 #' @param MC_R Number of replication foer the Monte Carlo estimation of tghe pure premiums
-#' @param acc scalar, level of accuracy that is the difference between to consecutive tolerance level (epsilon)
+#' @param acc scalar, level of accuracy taht is the difference between to consecutive tolerance level (epsilon)
 #'
 #' @return A list containing all the clouds and the distance to the real data for each particle.
 #' @export
